@@ -10,6 +10,11 @@ layout: default
   <div class="post-content">
     {{ content }}
   </div>
+  
+  <!-- mathjax -->
+  {% if page.mathjax %}
+  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+  {% endif %}
 
   {% if site.comments != false and page.comments != false %}
     <div class="post-comments">
@@ -17,9 +22,6 @@ layout: default
     </div>
   {% endif %}
   
-  <!-- mathjax -->
-  {% if page.mathjax %}
-  <script type="text/javascript" src="//cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-  {% endif %}
+
 
 </article>
