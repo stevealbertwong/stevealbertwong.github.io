@@ -77,7 +77,7 @@ def reject_sampling():
     """
     accepted_samples = []
     for i in xrange(10000):
-        x_i = np.random.normal(0,4,1)[0] # get random variable(row) not prob(height), 0: mean, 4:sd, 1:num of samples
+        x_i = np.random.normal(0,4,1)[0] # x_i: random variable(row) not prob(height), 0: mean, 4:sd, 1:num of samples
         real_data_prob = real_data_distribution(x_i)
         scale_ratio = scale_wrapper()
         acceptance_prob = real_data_prob/ (scale_ratio*(stat.norm.pdf(x_i, loc=0, scale=2)))        
@@ -87,12 +87,39 @@ def reject_sampling():
             
 ```
 
+## Metropolis
+
+```python
+
+def metropolis_hastings():
+    """
+    1. sample joint distribution rv and x_k random variables
+    2. combine into initial state/sample of such joint distribution
+    3. calculate initial state's loglike (i.e. how likely is sample from this joint distribution)
+    4. use initial state loglike as threshold
+    5. accept if (loglike_new - loglike_old) > uniform
+    6. if accepted => propose a new state conditioned on the accepted state
+    7. resulted in distribution of samples(i.e. likelihood of samples) 
+    """
+
+```
+
 ## MCMC
 
 Transition matrix is used to update real data approximation.
 
-Intuition:
+Difference from reject sampling + Intuition:
 * State/sample (i.e. random variable) accepted is used to draw new samples.
+* 
+
+?? is it because MCMC and metropolis is different 
+
+## Gibbs sampling
+
+## LDA
+
+
+
 
 ## Slice Sampling
 
