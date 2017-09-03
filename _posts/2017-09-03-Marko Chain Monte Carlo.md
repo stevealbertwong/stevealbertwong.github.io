@@ -71,8 +71,8 @@ def real_data_distribution(x):
 
 def reject_sampling():
     """
-    1. draw sample from normal
-    2. use that sample to draw from real
+    1. draw one sample from normal distribution
+    2. use that sample to draw from real data approximation
     3. accept if acceptance > uniform
     """
     accepted_samples = []
@@ -86,3 +86,17 @@ def reject_sampling():
             accepted_samples.append(x_i)
             
 ```
+
+## MCMC
+
+Transition matrix is used to update real data approximation.
+
+Intuition:
+* State/sample (i.e. random variable) accepted is used to draw new samples.
+
+## Slice Sampling
+
+
+reference:
+http://isaacslavitt.com/2013/12/30/metropolis-hastings-and-slice-sampling/
+https://nbviewer.jupyter.org/github/yoyolin/mcmc-tutorial/blob/master/MCMC_for_Bayesian_Inference.ipynb
