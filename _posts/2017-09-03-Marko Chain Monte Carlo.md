@@ -1,4 +1,7 @@
 ## What is MCMC?
+Markov Chain Monte Carlo is a technique to solve the problem of sampling from a complicated distribution.
+
+Definition (The sampling problem):  Let D be a distribution over a finite set X. You are given black-box access to the probability distribution function p(x) which outputs the probability of drawing x $\in$ X according to D. Design an efficient randomized algorithm A which outputs an element of X so that the probability of outputting x is approximately p(x). More generally, output a sample of elements from X drawn according to p(x).
 
 ## Why MCMC?
 
@@ -12,6 +15,10 @@ Given posterior as stationary distribution of a Markov Chain, we generate sample
 
 
 Given the stationary distribution of our Markov Chain, the posterior integral from Bayesian inference is intractable. (TBC) => but how is MCMC linked to transition matrix and posterior bayesian inference ??
+
+The main theorem we need to do anything useful with Markov chains is the stationary distribution theorem (sometimes called the “Fundamental Theorem of Markov Chains,” and for good reason). What it says intuitively is that for a very long random walk, the probability that you end at some vertex v is independent of where you started! All of these probabilities taken together is called the stationary distribution of the random walk, and it is uniquely determined by the Markov chain.
+
+Graph is required to be strongly connected
 
 ## Intuition from Reject Sampling
 
@@ -99,10 +106,12 @@ def metropolis_hastings():
     4. use initial state loglike as threshold
     5. accept if (loglike_new - loglike_old) > uniform
     6. if accepted => propose a new state conditioned on the accepted state
-    7. resulted in distribution of samples(i.e. likelihood of samples) 
+    7. resulted in distribution of samples(i.e. likelihood of samples drawn conditionally) 
     """
 
 ```
+
+
 
 ## MCMC
 
@@ -113,6 +122,16 @@ Difference from reject sampling + Intuition:
 * 
 
 ?? is it because MCMC and metropolis is different 
+
+?? also could one based on what we sample => proposed a new wrapper function => so we could effeciently draw from real data distribution??
+?? calculating difference between samples drawn and proposed distirubtion is it called KL divergence/ variational inference 
+
+
+## Application of MCMC
+1. MCMC cypher
+
+2. Knapsack Problem
+
 
 ## Gibbs sampling
 
@@ -127,3 +146,6 @@ Difference from reject sampling + Intuition:
 reference:
 http://isaacslavitt.com/2013/12/30/metropolis-hastings-and-slice-sampling/
 https://nbviewer.jupyter.org/github/yoyolin/mcmc-tutorial/blob/master/MCMC_for_Bayesian_Inference.ipynb
+https://jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/
+http://statweb.stanford.edu/~cgates/PERSI/papers/MCMCRev.pdf
+http://mlwhiz.com/blog/2015/08/21/MCMC_Algorithms_Cryptography/
