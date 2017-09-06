@@ -129,18 +129,31 @@ Difference from reject sampling + Intuition:
 
 ## Application of MCMC
 1. MCMC cypher
+   code:
 
 2. Knapsack Problem
 
 
 ## Gibbs sampling
 
+## Visualizing dirichlet distribution
+
+## Expectation Maximization
+
 ## LDA
 
+1. Code
 
+2. Mathematical Proof
+
+why sampling as opposed to just calculate real probability??
+prior ??
+preserve dirichlet distribution of word topics and topic documents??
 
 
 ## Slice Sampling
+
+
 
 
 reference:
