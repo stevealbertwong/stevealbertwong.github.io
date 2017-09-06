@@ -139,6 +139,9 @@ Difference from reject sampling + Intuition:
 ## Visualizing dirichlet distribution
 
 ## Expectation Maximization
+1. Running expectation maximization to find parameters for gaussian mixture models
+
+2. EM to fit a diagonal covariance Gaussian mixture model to text data
 
 ## LDA
 
@@ -162,3 +165,4 @@ https://nbviewer.jupyter.org/github/yoyolin/mcmc-tutorial/blob/master/MCMC_for_B
 https://jeremykun.com/2015/04/06/markov-chain-monte-carlo-without-all-the-bullshit/
 http://statweb.stanford.edu/~cgates/PERSI/papers/MCMCRev.pdf
 http://mlwhiz.com/blog/2015/08/21/MCMC_Algorithms_Cryptography/
+https://github.com/tuanavu/coursera-university-of-washington/blob/master/machine_learning/4_clustering_and_retrieval/assigment/week4/4_em-with-text-data_graphlab.ipynb
