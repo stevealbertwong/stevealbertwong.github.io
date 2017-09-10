@@ -23,14 +23,16 @@ CUDA guarantee:
 
 ## Local Memory vs Shared Memory vs Global Memory vs Host Memory
 GPU memory:
-* Local Memory: private to that thread, even same block has their own copy of local variable in local memory
+* Local Memory: private to that thread, even same block has their own copy of local variable in local memory, local variable is in local memory
 * Share Memory(per thread block): shared only to all threads inside thread block
 * Global Memory: accessible to any threads in entire system or any kernels.
 CPU's memory
 * Host Memory: CPU's memory
+* Local > Shared >> Global >> CPU
 
 A programmer's job is to divide his program into smaller computation for GPU to allocate to different Streaming Multiprocessor to compute.
 Usually CPU thread loads data from host memory to global memory when launches its work on GPU.
 
-## Memory Model
+## High-level Strategy
+1. Maximize arithmetic intensity i.e. math to time spent on accessing memory ratio 
 
