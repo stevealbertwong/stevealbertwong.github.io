@@ -1,6 +1,6 @@
 
 
-## Convex Set
+## Convex Set hihi
 
 
 * only difference between Affine and Convext Set is Affine is line 2D space vs Convex is line segment multi-D space
