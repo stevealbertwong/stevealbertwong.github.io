@@ -36,7 +36,6 @@ The intuition of approximation is:
 * real data is approximated through the percentage the height ratio is making through the acceptance gate, when drawing in normal distribution
 * Think of it as 3 scenarios when draws more: 1. draws more samples + acceptance ratio high = more accepted samples 2.draws more samples + super low acceptance ratio = very low samples (despite more draws, more proportion did not make through) 3. normal in wrapper + flat line in real data = it is true that we draw more samples, but acceptance ratio is decreased so real data approximation line remains flat
 
-Talk is cheap. Show me the code!
 
 ```python
 
