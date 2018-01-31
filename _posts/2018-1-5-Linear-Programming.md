@@ -15,7 +15,7 @@ mathjax: true
 
 
 <div class="imgcap">
-<img src="/assets/LP_1/simplex.jpg" height="300">
+<img src="/assets/LP_1/simplex.jpg" height="400">
 </div>
 
 
@@ -59,7 +59,7 @@ mathjax: true
 Graphically:
 
 <div class="imgcap">
-<img src="/assets/LP_1/graphical.jpg" height="300">
+<img src="/assets/LP_1/graphical.jpg" height="400">
 </div>
 
 
@@ -79,7 +79,7 @@ Graphically:
 	Formally, simplex in matrix form:
 
 <div class="imgcap">
-<img src="/assets/LP_1/simplex_matrix.jpg" height="300">
+<img src="/assets/LP_1/simplex_matrix.jpg" height="400">
 </div>
 
 	I wrote some python code to demonstrate simplex solver from scratch.
