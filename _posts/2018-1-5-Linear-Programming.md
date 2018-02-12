@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title:  "Introduction and real world application of Linear Programming(LP). Rethinking linear regression, logistic regression, support vector machine in LP."
-excerpt: " we talk about "
+title:  "Introduction and real world application of Linear Programming(LP). Rethinking linear regression, logistic regression, support vector machine in Convex Optimization."
+excerpt: " In progress... "
 date:   2017-01-14 11:00:00
 mathjax: true
 ---
@@ -267,7 +267,22 @@ if __name__ == "__main__":
 
 
 
+## SVD post UPDATES
+	=> covariance matrix be thought of as projection matrix
+	=> eigenvector perspective
 
+### SVM vs Ax=b vs linear regress vs logistic regression vs convex optimization vs svd
+	=> linear regression minimize sum of squared vertical distance vs pca minimize sum of squared perpendicular distance
+		=> cs168 lec 7
+	=> least square 
+		=> svd vs linear regression
+		=> linear algebra vs calculas(convex optimization) perspectives 
+			=> 18.06 lec 14-16 (projection matrices into col n null space)
+
+	=> convex opt
+		=> linear vs svm 
+		https://stats.stackexchange.com/questions/95340/comparing-svm-and-logistic-regression
+		http://www.cs.toronto.edu/~kswersky/wp-content/uploads/svm_vs_lr.pdf
 
 
 
@@ -302,6 +317,26 @@ QP
 	=> least square: QP
 	=> SVM
 	=> QP vs LP
+
+
+Proof of convexity
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 
 ## convex optimization
@@ -521,37 +556,14 @@ second order approximation requires solving linear system at each step
 
 
 
-## solving graph problems using linear programming
-
-	many applications is linear programming in disguised
-		=> linear constraints + linear max objective + graph is linear constraints n linear max
-		
-		=> interpretation of contraints from graph's edges is different
-
-	## x-y GRAPH == SIMPLEX == BFS ??
-		=> simplex is what you will have staring at computer screen.
-		=> supply n demand is usually 1 in BFS
-
-	max flow min cut as linear programming
-		=> maxflow as primal min cut is dual
-		=> min cut as dual in LP
-		=> DECISION VARIABLE: flow in edges
-
-	transfer problem as shortest path or transhippment or transportation tableau
-	=> solved using transportation tableau/simplex
 
 
-
-
-## CODE
-
-## different optimizations in max flow min cut
 
 ## biparttite matching
 
 ## l1 minimization
 
-## convex programming
+
 
 
 
