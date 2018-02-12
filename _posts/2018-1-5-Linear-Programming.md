@@ -278,6 +278,7 @@ if __name__ == "__main__":
 		=> svd vs linear regression
 		=> linear algebra vs calculas(convex optimization) perspectives 
 			=> 18.06 lec 14-16 (projection matrices into col n null space)
+			=> https://inst.eecs.berkeley.edu/~ee16a/sp17/lecture/Note_Lin_Alg_Release17.pdf
 
 	=> convex opt
 		=> linear vs svm 
