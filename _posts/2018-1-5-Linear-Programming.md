@@ -252,6 +252,64 @@ if __name__ == "__main__":
 
 ```
 
+
+## Linear Regression as convex optimization
+
+proof of convexity
+TODO
+
+Optimization with projection matrix (more commonly known as "fitting the best line" by setting partial derivatives to 0)
+
+<div class="imgcap">
+<img src="/assets/LP_1/linear-regression-geometric-3" height="400">
+</div>
+
+Least squares approximation in fitting the closest line is clearest application of convex optimization.
+In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from linear algebra or calculas perspective.
+
+
+### Proof of projection matrix
+
+<div class="imgcap">
+<img src="/assets/LP_1/linear-regression-geometric" height="400">
+</div>
+
+ => TODO
+ => projection equation
+
+\begin{align}
+Ax &= b \quad \text{where b = p + e, is not solvable}\\
+Ax_hat &= p \quad \text{is solvable} \\
+&= \\
+&= \\
+&= \\
+&= \\
+
+\end{align}
+
+
+
+instead of solving ax = b, we solve ax_hat = p  where x_hat indicates combination of column space of A
+
+geometrically, objective function could be viewed as fitting the best line. 
+
+If we also add in linear algebra's perspective, every vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space A.T is e. 
+
+Squared length for any x:  || ax - b || = ||ax-p|| = ||e|| .. pohedra theorem
+
+by projecting b on to column space we are solving the same problem as fitting the best line. squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized 
+
+note: in column space pic e is perpendicular distance whereas geometric it vertical distance
+
+calculas perspective:
+=> only show example partial derivative calculation to show its also projection matrix
+=> convex graph
+
+
+
+
+============================================================================================================================================
+
 	=> extreme point definition: 1 coordinate is 0 or interception
 	=> convert LP into Standard Form
 		=> all decision variables (variables in objective function) are non-negative
@@ -333,10 +391,10 @@ Proof of convexity
 
 
 
-
-
-
-
+============================================================================================================================================
+============================================================================================================================================
+============================================================================================================================================
+============================================================================================================================================
 
 
 
@@ -571,6 +629,9 @@ second order approximation requires solving linear system at each step
 ## reference:
 https://www.youtube.com/watch?v=C7gZzhs6JMk
 [here](http://www.stat.cmu.edu/~ryantibs/convexopt-S15/scribes/10-dual-lps-scribed.pdf)
+
+
+http://math.mit.edu/~gs/linearalgebra/ila0403.pdf
 
 LP: lmu + australia math
 svm: mit svm for idiots + coursera svm + jess noss + jeremy kunn
