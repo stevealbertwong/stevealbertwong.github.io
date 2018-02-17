@@ -278,24 +278,23 @@ By projecting \\(b\\) on to column space we are solving the same problem as fitt
 
 Note: (on the right) is minimizing \\(e\\) perpendicular distance to column space whereas (on the left) is minimizing vertical distance geometrically
 
-proof of projection matrix:
+Proof of projection matrix:
+
 $$
 \begin{align}
+
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
-A \hat x &= p \quad \text{is solvable} \\
+A \hat x &= p \quad \text{is solvable} \hat x \text{means combination in A column space} \\
 A^T(b-A \hat x) &= 0 \quad \text{since e in nullspace and } \perp \text{to A's column space } \\
 A^T A \hat x &= A^T b \\
 A \hat x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  A (A^T A)^{-1} A^T b  \text{is the projection matrix }\\
-\\
-
 \end{align}
 $$
 
 
-Instead of solving \\(Ax = b \\), we solve \\(A \hat x = p \\)  where \\(\hat x\\) represents combination of on column space of A. From above right diagram, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). 
+Instead of solving \\(Ax = b \\), we assume \\(b = p\\) and solve for \\(A \hat x = p \\) where \\(p\\) represents projection on column space of A and also the "best fit line". This reconciles 2 seemingly differnt objectives (vertical vs orthogonal) in 2 graphs above as the same. 
 
-
-Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
+From above right graph, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). A comparison of squared length distance for best line(on the left) vs projection that represents the best line on column space(on the right):
 
 $$
 \begin{align}
@@ -306,7 +305,7 @@ $$
 
 
 
-\\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when Ax-p is zero when \\( Ax = A\hat x = p\\) Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Vector \\(Ax - p \\) in column space (columns of A) that is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)) becomes 0. 
+\\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\(Ax-p\\) is zero when \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Vector \\(Ax - p \\) in column space (columns of A) that is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)) becomes 0. 
 
 
 
@@ -333,7 +332,7 @@ $$
 
 e_i &= b_i - C - Dt_i \quad \text{where C D is } \hat x \\
 
-\left\Vert Ax - b \right\Vert^2 &= (C + Dt_1 - b_1)^2 + \cdots + (C + Dt_m - b_m)^2 \quad \text{sum of errors} \\
+\left\Vert Ax - b \right\Vert^2 &= (C + Dt_1 - b_1)^2 + \cdots + (C + Dt_m - b_m)^2 \quad \text{summing up all errors} \\
 
 \end{align}
 $$
@@ -341,7 +340,7 @@ $$
 To compute the minimum of convex function, calculas sets partial derivatives \\( \frac{\partial E}{\partial C} \\) and \\( \frac{\partial E}{\partial D} \\) to zero and resulted in following equation to solve.
 
 $$
-\[
+
 
 \begin{bmatrix} 
 m & \sum t_i \\
@@ -358,14 +357,13 @@ D
 \sum t_i b_i 
 \end{bmatrix}
 
-\]
 $$
 
 Look closely this is the same equation as \\( A^T A \hat x = A^T b \\)!
 
 
 $$
-\[
+
 
 A^T A = 
 
@@ -388,8 +386,6 @@ m & \sum t_i \\
 \sum t_i & \sum t_i^2
 \end{bmatrix}
 
-
-\]
 $$
 
 
