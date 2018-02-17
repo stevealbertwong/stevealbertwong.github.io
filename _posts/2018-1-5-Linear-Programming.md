@@ -261,7 +261,7 @@ TODO
 Optimization with projection matrix (more commonly known as "fitting the best line" by setting partial derivatives to 0)
 
 <div class="imgcap">
-<img src="/assets/LP_1/linear-regression-geometric-3" height="400">
+<img src="/assets/LP_1/linear-regression-geometric-3.png" height="400">
 </div>
 
 Least squares approximation in fitting the closest line is clearest application of convex optimization.
@@ -271,7 +271,7 @@ In linear regression, Ax = b has no solution because of more equations than unkn
 ### Proof of projection matrix
 
 <div class="imgcap">
-<img src="/assets/LP_1/linear-regression-geometric" height="400">
+<img src="/assets/LP_1/linear-regression-geometric.png" height="400">
 </div>
 
  => TODO
@@ -280,7 +280,18 @@ In linear regression, Ax = b has no solution because of more equations than unkn
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
 Ax_hat &= p \quad \text{is solvable} \\
+A^T(b-A ^x) &= \quad \text{since e in nullspace } \perp \text{to A's column space } \\
 &= \\
+&= \\
+&= \\
+
+\end{align}
+
+
+\begin{align}
+Ax &= b \\
+Ax_hat &= p  \\
+A^T(b-A ^x) &= 0 \\
 &= \\
 &= \\
 &= \\
