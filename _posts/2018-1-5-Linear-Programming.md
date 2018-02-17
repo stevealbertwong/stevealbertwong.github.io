@@ -306,7 +306,7 @@ $$
 for right hand of above equation:
 \begin{itemize}
 	\item
-	\\(x \\) = arbtrary straight lines on left graph
+	\\(x \\) = arbtrary straight lines on left graph, combination on right graph
 	\item
 	\\(Ax \\) = arbitrary vectors on column space
 	\item
@@ -317,7 +317,7 @@ for right hand of above equation:
 	\\(Ax - p \\) = misses from direct projection measured on column space
 \end{itemize}
 
-Picking any non best lines on the left graph translates to positive \\( \left\Vert Ax - p \right\Vert^2 \\) + \\( \left\Vert e \right\Vert^2 \\) distance on the right graph. \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\( \left\Vert Ax - p \right\Vert^2 \\) is zero where \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Direct projection on right graph happens to coincide with finding best fit line on left graph.
+Picking any non best lines on the left graph translates to positive \\( \left\Vert Ax - p \right\Vert^2 \\) distance on the right graph (i.e. non zero vector adding to \\(p\\)). \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\( \left\Vert Ax - p \right\Vert^2 \\) is zero where \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Direct projection on right graph happens to coincide with finding best fit line on left graph.
 
 
 Below is 4 fundamental subspace analysis:
