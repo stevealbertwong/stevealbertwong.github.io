@@ -333,6 +333,7 @@ calculas perspective:
 => convex graph
 
 
+Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \^x = A^T b \\)
 
 
 
