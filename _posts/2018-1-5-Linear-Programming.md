@@ -265,36 +265,34 @@ Optimization with projection matrix (more commonly known as "fitting the best li
 </div>
 
 Least squares approximation in fitting the closest line is clearest application of convex optimization.
-In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from linear algebra or calculas perspective.
+In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from both linear algebra and calculas perspective.
 
 
-### Projection matrix to optimiza the best fitted line
+### Projection matrix to optimize for the best fit line
 
-By projecting b on to column space we are solving the same problem as fitting the best line. Squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized. To see this:
+By projecting \\(b\\) on to column space we are solving the same problem as fitting the best line. Squared length of \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized. To see this:
 
 <div class="imgcap">
 <img src="/assets/LP_1/linear-regression-geometric.png" height="400">
 </div>
 
+Note: (on the right) is minimizing \\(e\\) perpendicular distance to column space whereas (on the left) is minimizing vertical distance geometrically
 
+proof of projection matrix:
 $$
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
 A \hat x &= p \quad \text{is solvable} \\
-A^T(b-A \hat x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
+A^T(b-A \hat x) &= 0 \quad \text{since e in nullspace and } \perp \text{to A's column space } \\
 A^T A \hat x &= A^T b \\
-A \hat x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
-&= \\
+A \hat x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  A (A^T A)^{-1} A^T b  \text{is the projection matrix }\\
+\\
 
 \end{align}
 $$
 
 
-Instead of solving \\(Ax = b \\), we solve \\(A \hat x = p \\)  where \\(\hat x\\) represents combination of on column space of A. Squared length is minimized when combination equals projection of \\(b\\) on \\(A\\).
-
-
-
-From above right diagram, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). 
+Instead of solving \\(Ax = b \\), we solve \\(A \hat x = p \\)  where \\(\hat x\\) represents combination of on column space of A. From above right diagram, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). 
 
 
 Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
@@ -303,21 +301,12 @@ $$
 \begin{align}
 || Ax - b ||^2  &= || Ax-p ||^2 + || e ||^2  \quad \text {Pythagorean Theorem} \\
 
-\norm{Ax - b}^2 & = 1111
-
 \end{align}
 $$
 
-\\( \hat x \\)
-
-\\( || Ax - b ||^2 \\) is minimized when Ax-p is zero when \\( Ax = A\hat x = p\\)
 
 
-\\( \left\Vert Ax - b \right\Vert^2 \\)
-
-Projection matrix formula \\(A^T A \hat x = A^T b\\) project A Ax = A \hat x = p 
-
-Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)). 
+\\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when Ax-p is zero when \\( Ax = A\hat x = p\\) Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Vector \\(Ax - p \\) in column space (columns of A) that is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)) becomes 0. 
 
 
 
@@ -329,7 +318,7 @@ Below is 4 fundamental subspace analysis:
 
 
 
-note: in column space pic e is perpendicular distance whereas geometric it vertical distance
+
 
 calculas perspective:
 => calculas set to 0 is same as projection matrix proof:
@@ -337,19 +326,19 @@ calculas perspective:
 => convex graph
 
 
-Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \hat x = A^T b \\)
+Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \hat x = A^T b \\). To see why:
 
 $$
 \begin{align}
 
-e_i &= b_i - C - Dt_i \quad \text{where} C D \text{is} \hat x \\
+e_i &= b_i - C - Dt_i \quad \text{where C D is } \hat x \\
 
 \left\Vert Ax - b \right\Vert^2 &= (C + Dt_1 - b_1)^2 + \cdots + (C + Dt_m - b_m)^2 \quad \text{sum of errors} \\
 
 \end{align}
 $$
 
-To compute minimum of convex function, calculas set partial derivatives \\( \frac{\partial E}{\partial C} \\) and \\( \frac{\partial E}{\partial D} \\) to zero. 
+To compute the minimum of convex function, calculas sets partial derivatives \\( \frac{\partial E}{\partial C} \\) and \\( \frac{\partial E}{\partial D} \\) to zero and resulted in following equation to solve.
 
 $$
 \[
@@ -372,7 +361,7 @@ D
 \]
 $$
 
-This is the same equation as \\( A^T A \hat x = A^T b \\)
+Look closely this is the same equation as \\( A^T A \hat x = A^T b \\)!
 
 
 $$
@@ -406,7 +395,6 @@ $$
 
 
 $$
-\[
 
 A^T b = 
 
@@ -429,7 +417,7 @@ b_m
 \sum t_i b_i 
 \end{bmatrix}
 
-\]
+
 
 $$
 
