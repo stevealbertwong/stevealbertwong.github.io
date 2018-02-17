@@ -315,9 +315,9 @@ $$
 
 \\( \left\Vert Ax - b \right\Vert^2 \\)
 
-Projection matrix formula \\(A^T A ^x = A^T b\\) project A Ax = A ^x = p 
+Projection matrix formula \\(A^T A \hat x = A^T b\\) project A Ax = A \hat x = p 
 
-Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(b-A ^x\\) (i.e. \\(e \\)). 
+Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)). 
 
 
 
@@ -339,6 +339,99 @@ calculas perspective:
 
 Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \hat x = A^T b \\)
 
+$$
+\begin{align}
+
+e_i &= b_i - C - Dt_i \quad \text{where} C D \text{is} \hat x \\
+
+\left\Vert Ax - b \right\Vert^2 &= (C + Dt_1 - b_1)^2 + \cdots + (C + Dt_m - b_m)^2 \quad \text{sum of errors} \\
+
+\end{align}
+$$
+
+To compute minimum of convex function, calculas set partial derivatives \\( \frac{\partial E}{\partial C} \\) and \\( \frac{\partial E}{\partial D} \\) to zero. 
+
+$$
+\[
+
+\begin{bmatrix} 
+m & \sum t_i \\
+\sum t_i & \sum t_i^2
+\end{bmatrix}
+
+\begin{bmatrix} 
+C \\
+D
+\end{bmatrix}
+
+\begin{bmatrix} 
+\sum b_i \\
+\sum t_i b_i 
+\end{bmatrix}
+
+\]
+$$
+
+This is the same equation as \\( A^T A \hat x = A^T b \\)
+
+
+$$
+\[
+
+A^T A = 
+
+\begin{bmatrix} 
+1 & \cdots & 1\\
+t_i & \cdots & t_m
+\end{bmatrix}
+
+
+\begin{bmatrix} 
+1 & t_1 \\
+\vdots & \vdots \\
+1 & t_m
+\end{bmatrix}
+
+=
+
+\begin{bmatrix} 
+m & \sum t_i \\
+\sum t_i & \sum t_i^2
+\end{bmatrix}
+
+
+\]
+$$
+
+
+
+$$
+\[
+
+A^T b = 
+
+\begin{bmatrix} 
+m & \sum t_i \\
+\sum t_i & \sum t_i^2
+\end{bmatrix}
+
+
+\begin{bmatrix} 
+b_i \\
+\vdots \\
+b_m
+\end{bmatrix}
+
+= 
+
+\begin{bmatrix} 
+\sum b_i \\
+\sum t_i b_i 
+\end{bmatrix}
+
+\]
+
+$$
 
 
 
