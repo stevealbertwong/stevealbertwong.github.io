@@ -294,7 +294,7 @@ $$
 
 Instead of solving \\(Ax = b \\), we assume \\(b = p\\) and solve for \\(A \hat x = p \\) where \\(p\\) represents projection on column space of A and also the "best fit line". This reconciles 2 seemingly differnt objectives (vertical vs orthogonal) in 2 graphs above as the same. 
 
-From above right graph, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). A comparison of squared length distance for best line(on the left) vs projection that represents the best line on column space(on the right):
+A comparison of squared length distance for best line(on the left) vs direct projection line on column space(on the right):
 
 $$
 \begin{align}
@@ -303,9 +303,16 @@ $$
 \end{align}
 $$
 
+for right hand of above equation:
+\\(x \\) = arbtrary straight lines on left graph
+\\(Ax \\) = arbitrary vectors on column space
+\\(p \\) = b's projected part on column space
+\\(e \\) = perpenducular part in left null space
+\\(Ax - p \\) = misses from direct projection measured on column space
+
+Picking any non best lines on the left graph translates to positive \\( \left\Vert Ax - p \right\Vert^2 \\) + \\( \left\Vert e \right\Vert^2 \\) distance on the right graph. \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\( \left\Vert Ax - p \right\Vert^2 \\) is zero where \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Direct projection on right graph happens to coincide with finding best fit line on left graph.
 
 
-\\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\(Ax-p\\) is zero when \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Vector \\(Ax - p \\) in column space (columns of A) that is \\(\perp \\) to \\(b-A \hat x\\) (i.e. \\(e \\)) becomes 0. 
 
 
 
