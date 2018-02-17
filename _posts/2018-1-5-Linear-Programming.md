@@ -315,18 +315,24 @@ Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
 
 $$
 \begin{align}
-
-(Ax - b)^2  &= (Ax-p)^2 + (e)^2  \text {where} Ax-p \text{is zero when x } = ^x \text{and squared length of Ax = b is minimized} \\
-
-&= \\
-&= \\
-
+(Ax - b)^2  &= (Ax-p)^2 + (e)^2  \text {pohedra theorem} \\
 \end{align}
-
 $$
 
 
+Given
+(Ax - b)^2  &= (Ax-p)^2 + (e)^2 
+
+(Ax-b)^2 is minimized when Ax-p is zero. That is when Ax = A ^x = p
+Ax = A ^x = p when \\(A^T A ^x = A^T b\\).
+
 by projecting b on to column space we are solving the same problem as fitting the best line. squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized 
+
+Below is 4 fundamental subspace analysis:
+<div class="imgcap">
+<img src="/assets/LP_1/linear-regression-geometric-2.png" height="400">
+</div>
+
 
 
 
