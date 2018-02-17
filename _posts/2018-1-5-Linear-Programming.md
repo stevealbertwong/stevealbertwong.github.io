@@ -280,10 +280,10 @@ In linear regression, Ax = b has no solution because of more equations than unkn
 $$
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
-Ax_hat &= p \quad \text{is solvable} \\
-A^T(b-A ^x) &= \quad \text{since e in nullspace } \perp \text{to A's column space } \\
-&= \\
-&= \\
+A ^x &= p \quad \text{is solvable} \\
+A^T(b-A ^x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
+A^T A ^x &= A^T b \\
+A ^x &=  \inv{A (A^T A) A^T} b  \quad \text{where }  \inv{A (A^T A) A^T} \text{is the projection matrix }\\
 &= \\
 
 \end{align}
@@ -303,21 +303,41 @@ A^T(b-A ^x) &= 0 \\
 
 $$
 
-instead of solving ax = b, we solve ax_hat = p  where x_hat indicates combination of column space of A
+
+instead of solving \\(Ax = b \\), we solve \\(A ^x = p \\)  where \\(^x\\) represents combination of column space of A (projected on A)
 
 geometrically, objective function could be viewed as fitting the best line. 
 
-If we also add in linear algebra's perspective, every vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space A.T is e. 
+If we also add in linear algebra's perspective, every vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space \\(A^T \\) is \\(e \\). Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(e \\) or \\(b-A ^x\\). The error is in nullspace of \\(A^T\\)
 
-Squared length for any x:  || ax - b || = ||ax-p|| = ||e|| .. pohedra theorem
+
+Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
+
+$$
+\begin{align}
+
+(Ax - b)^2  &= (Ax-p)^2 + (e)^2  \text {where} Ax-p \text{is zero when x } = ^x \text{and squared length of Ax = b is minimized} \\
+
+&= \\
+&= \\
+
+\end{align}
+
+$$
+
 
 by projecting b on to column space we are solving the same problem as fitting the best line. squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized 
+
+
 
 note: in column space pic e is perpendicular distance whereas geometric it vertical distance
 
 calculas perspective:
+=> calculas set to 0 is same as projection matrix proof:
 => only show example partial derivative calculation to show its also projection matrix
 => convex graph
+
+
 
 
 
