@@ -280,17 +280,17 @@ By projecting b on to column space we are solving the same problem as fitting th
 $$
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
-A \^x &= p \quad \text{is solvable} \\
-A^T(b-A \^x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
-A^T A \^x &= A^T b \\
-A \^x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
+A \hat x &= p \quad \text{is solvable} \\
+A^T(b-A \hat x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
+A^T A \hat x &= A^T b \\
+A \hat x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
 &= \\
 
 \end{align}
 $$
 
 
-Instead of solving \\(Ax = b \\), we solve \\(A \^x = p \\)  where \\(\^x\\) represents combination of on column space of A. Squared length is minimized when combination equals projection of \\(b\\) on \\(A\\).
+Instead of solving \\(Ax = b \\), we solve \\(A \hat x = p \\)  where \\(\hat x\\) represents combination of on column space of A. Squared length is minimized when combination equals projection of \\(b\\) on \\(A\\).
 
 
 
@@ -308,10 +308,10 @@ $$
 \end{align}
 $$
 
-\\( $\hat x$ \\)
+\\( \hat x \\)
 
-\\( || Ax - b ||^2 \\) is minimized when Ax-p is zero when Ax = A ^x = p.
-\\(\norm{Ax - b}^2 \\) is minimoized
+\\( || Ax - b ||^2 \\) is minimized when Ax-p is zero when \\( Ax = A\hat x = p\\)
+
 
 \\( \left\Vert Ax - b \right\Vert^2 \\)
 
@@ -337,7 +337,7 @@ calculas perspective:
 => convex graph
 
 
-Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \^x = A^T b \\)
+Alternatively from calculas, by taking partial derivative of error function and setting it to zero results in same equation \\( A^T A \hat x = A^T b \\)
 
 
 
