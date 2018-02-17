@@ -268,65 +268,54 @@ Least squares approximation in fitting the closest line is clearest application 
 In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from linear algebra or calculas perspective.
 
 
-### Proof of projection matrix
+### Projection matrix to optimiza the best fitted line
+
+By projecting b on to column space we are solving the same problem as fitting the best line. Squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized. To see this:
 
 <div class="imgcap">
 <img src="/assets/LP_1/linear-regression-geometric.png" height="400">
 </div>
 
- => TODO
- => projection equation
 
 $$
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
-A ^x &= p \quad \text{is solvable} \\
-A^T(b-A ^x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
-A^T A ^x &= A^T b \\
-A ^x &=  \inv{A (A^T A) A^T} b  \quad \text{where }  \inv{A (A^T A) A^T} \text{is the projection matrix }\\
+A \^x &= p \quad \text{is solvable} \\
+A^T(b-A \^x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
+A^T A \^x &= A^T b \\
+A \^x &=  (A (A^T A) A^T b)^{-1}  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
 &= \\
 
 \end{align}
 $$
 
 
-$$
-\begin{align}
-Ax &= b \\
-Ax_hat &= p  \\
-A^T(b-A ^x) &= 0 \\
-&= \\
-&= \\
-&= \\
-
-\end{align}
-
-$$
+Instead of solving \\(Ax = b \\), we solve \\(A \^x = p \\)  where \\(\^x\\) represents combination of on column space of A. Squared length is minimized when combination equals projection of \\(b\\) on \\(A\\).
 
 
-instead of solving \\(Ax = b \\), we solve \\(A ^x = p \\)  where \\(^x\\) represents combination of column space of A (projected on A)
 
-geometrically, objective function could be viewed as fitting the best line. 
-
-If we also add in linear algebra's perspective, every vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space \\(A^T \\) is \\(e \\). Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(e \\) or \\(b-A ^x\\). The error is in nullspace of \\(A^T\\)
+From above right diagram, vector b is splited into 2 parts: the projected part in column space is p and the perpendicular part in null space of \\(A^T \\) is \\(e \\). 
 
 
 Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
 
 $$
 \begin{align}
-(Ax - b)^2  &= (Ax-p)^2 + (e)^2  \text {pohedra theorem} \\
+|| Ax - b ||^2  &= (Ax-p)^2 + (e)^2  \quad \text {Pythagorean Theorem} \\
+
+\norm{Ax - b}^2 & = 1111
+
 \end{align}
 $$
 
 
-Given
-(Ax - b)^2  &= (Ax-p)^2 + (e)^2 
+\\( || Ax - b ||^2 \\) is minimized when Ax-p is zero when Ax = A ^x = p.
 
-(Ax-b)^2 is minimized when Ax-p is zero. That is when Ax = A ^x = p
-Ax = A ^x = p when \\(A^T A ^x = A^T b\\).
+Projection matrix formula \\(A^T A ^x = A^T b\\) project A Ax = A ^x = p 
 
-by projecting b on to column space we are solving the same problem as fitting the best line. squared length of Ax - b (E = e^2_1 + .. + e^2_m) is minimized 
+Vector \\(Ax - p \\) in column space (columns of A) is \\(\perp \\) to \\(b-A ^x\\) (i.e. \\(e \\)). 
+
+
 
 Below is 4 fundamental subspace analysis:
 <div class="imgcap">
