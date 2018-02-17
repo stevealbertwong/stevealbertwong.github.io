@@ -277,6 +277,7 @@ In linear regression, Ax = b has no solution because of more equations than unkn
  => TODO
  => projection equation
 
+$$
 \begin{align}
 Ax &= b \quad \text{where b = p + e, is not solvable}\\
 Ax_hat &= p \quad \text{is solvable} \\
@@ -286,8 +287,10 @@ A^T(b-A ^x) &= \quad \text{since e in nullspace } \perp \text{to A's column spac
 &= \\
 
 \end{align}
+$$
 
 
+$$
 \begin{align}
 Ax &= b \\
 Ax_hat &= p  \\
@@ -298,7 +301,7 @@ A^T(b-A ^x) &= 0 \\
 
 \end{align}
 
-
+$$
 
 instead of solving ax = b, we solve ax_hat = p  where x_hat indicates combination of column space of A
 
