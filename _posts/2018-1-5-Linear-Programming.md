@@ -283,7 +283,7 @@ Ax &= b \quad \text{where b = p + e, is not solvable}\\
 A \^x &= p \quad \text{is solvable} \\
 A^T(b-A \^x) &= 0 \quad \text{since e in nullspace } \perp \text{to A's column space } \\
 A^T A \^x &= A^T b \\
-A \^x &=  (A (A^T A) A^T b)^{-1}  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
+A \^x &=  A (A^T A)^{-1} A^T b  \quad \text{where }  (A (A^T A) A^T b)^{-1}  \text{is the projection matrix }\\
 &= \\
 
 \end{align}
@@ -301,15 +301,19 @@ Squared length for any x:  || ax - b || = ||ax-p|| + ||e|| .. pohedra theorem
 
 $$
 \begin{align}
-|| Ax - b ||^2  &= (Ax-p)^2 + (e)^2  \quad \text {Pythagorean Theorem} \\
+|| Ax - b ||^2  &= || Ax-p ||^2 + || e ||^2  \quad \text {Pythagorean Theorem} \\
 
 \norm{Ax - b}^2 & = 1111
 
 \end{align}
 $$
 
+\\( $\hat x$ \\)
 
 \\( || Ax - b ||^2 \\) is minimized when Ax-p is zero when Ax = A ^x = p.
+\\(\norm{Ax - b}^2 \\) is minimoized
+
+\\( \left\Vert Ax - b \right\Vert^2 \\)
 
 Projection matrix formula \\(A^T A ^x = A^T b\\) project A Ax = A ^x = p 
 
