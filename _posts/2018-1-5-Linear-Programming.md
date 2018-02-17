@@ -304,26 +304,26 @@ $$
 $$
 
 for right hand of above equation:
-\\(x \\) = arbtrary straight lines on left graph
-\\(Ax \\) = arbitrary vectors on column space
-\\(p \\) = b's projected part on column space
-\\(e \\) = perpenducular part in left null space
-\\(Ax - p \\) = misses from direct projection measured on column space
+\begin{itemize}
+	\item
+	\\(x \\) = arbtrary straight lines on left graph
+	\item
+	\\(Ax \\) = arbitrary vectors on column space
+	\item
+	\\(p \\) = b's projected part on column space
+	\item
+	\\(e \\) = perpenducular part in left null space
+	\item
+	\\(Ax - p \\) = misses from direct projection measured on column space
+\end{itemize}
 
 Picking any non best lines on the left graph translates to positive \\( \left\Vert Ax - p \right\Vert^2 \\) + \\( \left\Vert e \right\Vert^2 \\) distance on the right graph. \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\( \left\Vert Ax - p \right\Vert^2 \\) is zero where \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Direct projection on right graph happens to coincide with finding best fit line on left graph.
-
-
-
 
 
 Below is 4 fundamental subspace analysis:
 <div class="imgcap">
 <img src="/assets/LP_1/linear-regression-geometric-2.png" height="400">
 </div>
-
-
-
-
 
 
 calculas perspective:
@@ -358,6 +358,8 @@ m & \sum t_i \\
 C \\
 D
 \end{bmatrix}
+
+=
 
 \begin{bmatrix} 
 \sum b_i \\
@@ -402,8 +404,8 @@ $$
 A^T b = 
 
 \begin{bmatrix} 
-m & \sum t_i \\
-\sum t_i & \sum t_i^2
+1 & \cdots & 1\\
+t_i & \cdots & t_m
 \end{bmatrix}
 
 
