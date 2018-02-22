@@ -264,7 +264,7 @@ Optimization with projection matrix (more commonly known as "fitting the best li
 <img src="/assets/LP_1/linear-regression-geometric-3.png" height="400">
 </div>
 
-Least squares approximation in fitting the closest line is clearest application of convex optimization.
+Least squares projection approximation, also known as linear regression, is clearest application of convex optimization.
 In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from both linear algebra and calculas perspective.
 
 
@@ -304,9 +304,10 @@ $$
 $$
 
 for right hand of above equation:
+
 \begin{itemize}
 	\item
-	\\(x \\) = arbtrary straight lines on left graph, combination on right graph
+	x = arbtrary straight lines on left graph, combination on right graph
 	\item
 	\\(Ax \\) = arbitrary vectors on column space
 	\item
