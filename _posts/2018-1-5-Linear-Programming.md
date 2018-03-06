@@ -433,6 +433,14 @@ $$
 
 
 
+## SVM
+
+=> SVM quantify a better decision boundary, optimization exlicitly tries to maxmize margin between data
+=> compared to logistic regression, remove scale invariance
+
+\\(\theta_0\\)
+
+
 ============================================================================================================================================
 
 	=> extreme point definition: 1 coordinate is 0 or interception
