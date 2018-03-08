@@ -1,7 +1,7 @@
 ---
 layout: post
 comments: true
-title:  "Introduction and real world application of Linear Programming(LP). Rethinking linear regression, logistic regression, support vector machine in Convex Optimization."
+title:  "Introduction of Linear Programming(LP) and convex optimization. Reframing linear regression, support vector machine as convex optimization."
 excerpt: " In progress... "
 date:   2017-01-14 11:00:00
 mathjax: true
@@ -13,6 +13,8 @@ mathjax: true
 	Intuitively, ERO is looking for extreme points in constraints.
 	Here is a classical example:
 
+
+![]({{"/assets/LP_1/simplex.jpg"|absolute_url}})
 
 <div class="imgcap">
 <img src="/assets/LP_1/simplex.jpg" height="400">
@@ -474,12 +476,9 @@ $$
 
 
 
-=> formulate SVM cost function to optimize
-
-Formulate trainable parameters in cost function to do classification
 
 
-
+Formulate trainable parameters in cost function to do classification. As a convex optimization task, we want to spread the gutter as far away until it reaches.
 
 1. Decision rule
 
@@ -529,6 +528,10 @@ Inner product is equivalent to project data onto normal, if the projected length
 
 Projection means take only the components of x that point in the direction of w. Another way to think of this is that the projection is x, modified by removing any part of x that is perpendicular to w.
 
+<div class="imgcap">
+<img src="/assets/LP_1/svm-inner-2" height="400">
+</div>	
+
 
 
 Now finally we are ready to formulate SVM optimization objective. All we need to do is substitute constraints into decision boundary and dot the difference between +ve and -ve support vectors with unit normal vector. Projection onto normal with normal equals to 1 directly calculates the street width.
@@ -554,38 +557,50 @@ $$
 
 
 
-As a convex optimization task, we want to spread the gutter as far away until it reaches 
+Intuition of scaling normal
 
-
-normal w: scale length of w to force \\( w,x \\) = 1
-
-	=> inner product defines a hyperplane
-
-
-2. mathematical convenience
-
-Given data points, we add constraints to ensure street width. 
+It might not be immediately clear how \\(\min_{w} \frac{1}{2} \| w \|^2 \\) wiggle gutters and medium to the optimal form. 
 
 <div class="imgcap">
-<img src="/assets/LP_1/svm-constraint" height="400">
+<img src="/assets/LP_1/svm-train" height="400">
 </div>	
 
+<div class="imgcap">
+<img src="/assets/LP_1/svm-train-2" height="400">
+</div>	
 
-then add mathematical convenience, variable y to denote +ve or -ve label of data
+<div class="imgcap">
+<img src="/assets/LP_1/svm-train-3" height="400">
+</div>	
+
+We could see the smaller the normal, the wider the gutter. This corresponds with maximizing street width \\(\frac{2}{\vec{ \|w\|}}\\). 
+
+If we look closely, there is a scaling variable c for support vectors on gutters.
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-scale-2" height="400">
+</div>	
+<div class="imgcap">
+<img src="/assets/LP_1/svm-scale" height="400">
+</div>	
+<div class="imgcap">
+<img src="/assets/LP_1/svm-scale-3" height="400">
+</div>	
+
+$$
+\begin{aligned}
+c \cdot \vec{w} \cdot x = 1
+\end{aligned}
+$$
+
+We could see the bigger x is, the smaller scaling variable c is going to be, given \\(\vec{w}\\) is unchanged. This exactly explains the above figure when the normal arrow is \\(c \cdot w\\) and the gutter is x.
+
+
+
+
 
 samples on the gutter/margin is exactly zero, all +ve data points projected onto a optimized normal should be bigger than 1 (margin).
 
-
-constraints translate to 
-
-
-3. final form 
-
-
-
-<div class="imgcap">
-<img src="/assets/LP_1/svm-graphical-proof" height="400">
-</div>	
 
 
 
@@ -594,12 +609,6 @@ constraints translate to
 \displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0
 
 $$\displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0$$
-
-
-Intuition on why norm of w is changing
-	=> scaling
-
-
 
 
 
