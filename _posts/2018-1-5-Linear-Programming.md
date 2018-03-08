@@ -2,7 +2,7 @@
 layout: post
 comments: true
 title:  "Introduction of Linear Programming(LP) and convex optimization. Reframing linear regression, support vector machine as convex optimization."
-excerpt: " In progress... "
+excerpt: "final touch up"
 date:   2017-01-14 11:00:00
 mathjax: true
 ---
