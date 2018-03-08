@@ -457,6 +457,8 @@ Projection means take only the components of x that point in the direction of w.
 
 [for a good visualization](http://j2kun.github.io/decision-rule/index.html)
 
+$\vec{w}$ is normal
+\\(\vec{w}\\)
 w is normal to decision boundary we are optimizing for. and c is the margin we set
 This 90-degree boundary is the line perpendicular to w.
 
