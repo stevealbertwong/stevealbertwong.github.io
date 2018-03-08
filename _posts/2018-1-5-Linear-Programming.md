@@ -7,86 +7,45 @@ date:   2017-01-14 11:00:00
 mathjax: true
 ---
 
+Optimization is slightly difficult to wrap our head around when first time hear about. Linear Programming is a good introduction to the idea of optimization.
 
-## simplex (actual implemntation in algorithm form) n its graphical meaning
+## Linear Programming using simplex method and its graphical meaning
 
-	Intuitively, ERO is looking for extreme points in constraints.
-	Here is a classical example:
+
+First we run an entire simplex computation:
 
 
 ![]({{"/assets/LP_1/simplex.jpg"|absolute_url}})
 
-![](/assets/LP_1/simplex.jpg)
 
-<div class="imgcap">
-<img src="/assets/LP_1/simplex.jpg" height="400">
-</div>
+Pivoting: determine entering & leaving variables and using ratio test to determine pivot row	
 
+Basic feasible solution: given n variables and m constraints (n>m), basic feasible solution (BFS) is obtained by setting n-m variables non-basic variables (NBV) to 0 to solve for m variables Basic Variables (BV) i.e. just pick 1 variable and set rest to 0 in each constraint. If LP has optimal solution, there could be a set of points and at least 1 of these set of points is extreme point
 
-		1. Pivoting: determine entering & leaving variables + ratio test to determine pivot row
+Pivoting is trying out extreme point according to objective function and adjacent basic fesible solution by changing 1 variable at 1 time. We pick pivot point (extreme point) by picking pivot row and pivot column(entering variable). Entering variable is decision variables that causes the biggest increase in objective function. Variables that are not entering variable are slack variable which turns inequality into equality. Existence of slack variable indicates room from constraint, allow such extreme point not on the constraint line.
+	
+Then use elimination row operation (ERO) to find adjacent BFS (adjacent extreme point). Intuitively, ERO is looking for extreme points in constraints.
 
-			=> simplex canonical form n canonical simplex tableau
-
-			=> pivoting: trying out extreme point according to objective function, adjacent bfs by chaning 1 variable at 1 time
-
-			=> pivot row + entering variable (pivot column) == pivot point (extreme point)		
-				=> entering variable: decision variables that causes the biggest increase in objective function		
-				=> slack variable in same pivot row becomes zero
-				=> elimination row operation == found adjacent BFS (adjacent extreme point)
-				=> get difference between 2 constraints changing 1 variable in BFS to adjacent BFS, given we have the same variable in BFS (i.e. when constraints meet how much difference in that variable in adjacent BFS)		
-					=> convert to [1 0 1 0] that measure difference
-				=> when minus contraint with objective function, you are left with SLOPE DIFFERENCE 
-				=> when minus 1 constraint from another, looking for point that coincides, then see how that slope difference translate to value at that point
-				=> slope difference: share area between objective line and constraint line difference i.e. potential for constraint line to go further for a higher value
-				=> entering variable might not be pivot
-						
-			=> ratio test to decide pivot row 
-				=> determine largest value entering variable (x or y) could be without violating constraints
-
-				=> i.e. amount all constraints the smallest so it wont violate other constraints when we zero out all other decision variables
-				=> rhs of constraint row / coef of entering var in constraint row				
+Then we get difference between 2 constraints changing 1 variable in BFS to adjacent BFS, given we have the same variable in BFS (i.e. when constraints meet how much difference in that variable in adjacent BFS). Our goal is to convert to identity [1 0 1 0] that measure difference. 
 			
-			=> pivot row + entering variable (pivot column) == pivot point (extreme point)		
-				=> entering variable: decision variables that causes the biggest increase in objective function		
-				=> slack variable in same pivot row becomes zero
-				=> elimination row operation == found adjacent BFS (adjacent extreme point)
-				=> get difference between 2 constraints changing 1 variable in BFS to adjacent BFS, given we have the same variable in BFS (i.e. when constraints meet how much difference in that variable in adjacent BFS)		
-					=> convert to [1 0 1 0] that measure difference
-				=> when minus contraint with objective function, you are left with SLOPE DIFFERENCE 
-				=> when minus 1 constraint from another, looking for point that coincides, then see how that slope difference translate to value at that point
-				=> slope difference: share area between objective line and constraint line difference i.e. potential for constraint line to go further for a higher value
-				=> entering variable might not be pivot
-
-		2. ERO + updates obj value
-			=> get rid of same variable in other rows by ERO 
+Then we apply ratio test to decide pivot row. Intuitively ratio test determines largest value entering variable (x or y) could be without violating constraints. i.e. amount all constraints the smallest so it wont violate other constraints when we zero out all other decision variables.
+						
+Then we recursively apply ERO and updates objective until there is no negative left.
+			
 
 Graphically:
 
-<div class="imgcap">
-<img src="/assets/LP_1/graphical.jpg" height="400">
-</div>
+![](/assets/LP_1/graphical.jpg)
+
+The more important part is visualizing LP in the above graph. When minus contraint with objective function, you are left with SLOPE DIFFERENCE. Slope difference is the shared area between objective line and constraint line difference i.e. potential for constraint line to go further for a higher value.
+In constrast, when minus 1 constraint from another, we looking for point that coincides, then see how that slope difference translate to value at that point.
 
 
-		convert to stadard form: 
-		add one slack variable for each inequality, which turn inequality into equality
-			=> slack indicates room from constraint, allow such extreme point not on the constraint line i.e. sum of decision variable distance from constraint
-			=> n excess variables 
-		(should not exist for all constraint equations in max since constraint should be upper rather than lower bounded, however okay if 1 excess and 1 slack)
-		
+Formally, simplex in matrix form:
 
-		=> 2. Basic feasible solution i.e. extreme point => given n variables and m constraints (n>m), basic feasible solution is obtained by setting n-m variables non-basic variables (NBV) to 0 to solve for m variables Basic Variables (BV) i.e. just pick 1 variable and set rest to 0 in each constraint
-		if LP has optimal solution, there could be a set of points and at least 1 of these set of points is extreme point
-		no. of basic feasible solution: number of variables in each constraints multiply by each other (only 1 variable in each constraint could take on non-zero value)
-		adjacent fesible solution: change of 1 decision variable
+![](/assets/LP_1/simplex_matrix.jpg)
 
-
-	Formally, simplex in matrix form:
-
-<div class="imgcap">
-<img src="/assets/LP_1/simplex_matrix.jpg" height="400">
-</div>
-
-	I wrote some python code to demonstrate simplex solver from scratch.
+I wrote some python code to demonstrate simplex solver from scratch.
 
 ```python
 
@@ -259,14 +218,9 @@ if __name__ == "__main__":
 
 ## Linear Regression as convex optimization
 
-proof of convexity
-TODO
-
 Optimization with projection matrix (more commonly known as "fitting the best line" by setting partial derivatives to 0)
 
-<div class="imgcap">
-<img src="/assets/LP_1/linear-regression-geometric-3.png" height="400">
-</div>
+![](/assets/LP_1/linear-regression-geometric-3.png)
 
 Least squares projection approximation, also known as linear regression, is clearest application of convex optimization.
 In linear regression, Ax = b has no solution because of more equations than unknowns. The matix has more rows than columns. We could compute such optimization from both linear algebra and calculas perspective.
@@ -276,9 +230,8 @@ In linear regression, Ax = b has no solution because of more equations than unkn
 
 By projecting \\(b\\) on to column space we are solving the same problem as fitting the best line. Squared length of \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized. To see this:
 
-<div class="imgcap">
-<img src="/assets/LP_1/linear-regression-geometric.png" height="400">
-</div>
+![](/assets/LP_1/linear-regression-geometric.png)
+
 
 Note: (on the right) is minimizing \\(e\\) perpendicular distance to column space whereas (on the left) is minimizing vertical distance geometrically
 
@@ -452,47 +405,25 @@ w is called normal and \\(perp\\) to decision boundary \\(H_0\\) we are optimizi
 \\(H_1\\) and \\(H_2\\) are gutters where support vectors, i.e. the closest +ve and -ve data point, lies on
 Gutters and decision boundary together form a street since it looks like a street.
 
-b is shift/bias/offset that primarily shift the medium line that originally pass through the origin
+\\(b\\) is shift/bias/offset that primarily shift the medium line that originally pass through the origin
 
 \\(x_+\\) is datapoints with +ve label, \\(x_-\\) is datapoints with -ve label
 
-
-
-Formally:
-Labeled datasets 
-$$
-D = {(x_i, y_i)|i = 1,...,m, x_i \in\mathbb{R}^n, y_i \in {1,-1}}
-$$
-
-Hypothesis/medium defined by normal
-$$
-w \in\mathbb{R}^n
-$$
-
-
-
-Shift/bias/offset
-$$
-b \in\mathbb{R}
-$$
-
-
-
+Labeled datasets: $$ D = {(x_i, y_i)|i = 1,...,m, x_i \in\mathbb{R}^n, y_i \in {1,-1}}$$
 
 
 Formulate trainable parameters in cost function to do classification. As a convex optimization task, we want to spread the gutter as far away until it reaches.
 
-1. Decision rule
-
-<div class="imgcap">
-<img src="/assets/LP_1/svm-decision-rule" height="400">
-</div>	
 
 $$
 \begin{align}
 \vec{w} \cdot \vec{x} = 0
 \end{align}
 $$
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-decision-rule" height="400">
+</div>	
 
 Decision rule or hyperplane is the line that separates which separates all data points with +ve labels from those with -ve labels. i.e. \\ (H_0\\)
 Graphically, \\(\vec{w} \cdot \vec{x} + b = 0\\) can be expressed as \\(y = ax + b\\). By setting \\(\vec{w} \cdot \vec{x} + b\\) to zero, we are optimizing for \\(\vec{w}\\) and \\(b\\) that maximizes the margin. 
@@ -517,7 +448,6 @@ y_i (\vec{w} \cdot \vec{x_1}) + b -1 \ge 0 \quad \text{for all points}\\
 y_i (\vec{w} \cdot \vec{x_1}) + b -1  = 0 \quad \text{for support vectors that lies on gutter}
 \end{align}
 $$
-
 
 We can see inner product between data points and normal determines the sign of data points.
 Inner product is equivalent to project data onto normal, if the projected length is longer than margin it is a +ve sample, otherwise it is -ve.
@@ -550,13 +480,10 @@ $$
 </div>	
 
 
-
 As such, final form of optimization function:
 $$ 
 \begin{aligned} & \min_{w}  \frac{1}{2} \| w \|^2 & \\ \textup{subject to \ \ } & (\langle x_i, w \rangle + b) \cdot y_i \geq 1 & \textup{ for every } i = 1, \dots, m \end{aligned}
 $$
-
-
 
 
 Intuition of scaling normal
@@ -597,389 +524,18 @@ $$
 
 We could see the bigger x is, the smaller scaling variable c is going to be, given \\(\vec{w}\\) is unchanged. This exactly explains the above figure when the normal arrow is \\(c \cdot w\\) and the gutter is x.
 
-
-
-
-
-samples on the gutter/margin is exactly zero, all +ve data points projected onto a optimized normal should be bigger than 1 (margin).
-
-
-
-
-
-
-\displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0
-
-$$\displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0$$
-
-
-
-
-
-	=> SVM quantify a better decision boundary, optimization exlicitly tries to maxmize margin between data, 
-	=> pick best hyperplane
-
-	2. 
-
-
-=> compared to logistic regression, remove scale invariance, SVM computational advantages and easier optimization problem
-=> use w instead of log theta 
-
-	
-=> show SVM is optimizing contrainted system: quadratic programming with quadratic cost function of parameters n linear constraints
-=> lagar
-
-		=> ref: uc irlvine => 1d example: max margin == max distance between positive and negative + w perpendicular to decision boundary
-		=> https://jeremykun.com/2017/06/05/formulating-the-support-vector-machine-optimization-problem/
-		=> MIT An Idiot’s guide to Support vector machines (SVMs) + MIT 6034
-		=> andrew ng
-		=> siraj
-
-		=> proof of distance: https://brilliant.org/wiki/dot-product-distance-between-point-and-a-line/
-		https://brilliant.org/wiki/dot-product-definition/
-		https://mathinsight.org/distance_point_plane
-
-$$
-\begin{align}
-
-\theta_0 + \theta_1 x_1 + \theta_2 x_2 + ...\\
-
-b + w_1 x_1 + w_2 x_2 + ...
-
-\end{align}
-$$
-
-
-
-
-============================================================================================================================================
-
-	=> extreme point definition: 1 coordinate is 0 or interception
-	=> convert LP into Standard Form
-		=> all decision variables (variables in objective function) are non-negative
-				
-
-
-		=> EXAMPLE: patrict JMT 3d data, 2 contraints case
-
-
-		=> 5. matrix form
-			=> RGB math lec12a
-
-
-
-
-## SVD post UPDATES
-	=> covariance matrix be thought of as projection matrix
-	=> eigenvector perspective
-
-### SVM vs Ax=b vs linear regress vs logistic regression vs convex optimization vs svd
-	=> linear regression minimize sum of squared vertical distance vs pca minimize sum of squared perpendicular distance
-		=> cs168 lec 7
-	=> least square 
-		=> svd vs linear regression
-		=> linear algebra vs calculas(convex optimization) perspectives 
-			=> 18.06 lec 14-16 (projection matrices into col n null space)
-			=> https://inst.eecs.berkeley.edu/~ee16a/sp17/lecture/Note_Lin_Alg_Release17.pdf
-
-	=> convex opt
-		=> linear vs svm 
-		https://stats.stackexchange.com/questions/95340/comparing-svm-and-logistic-regression
-		http://www.cs.toronto.edu/~kswersky/wp-content/uploads/svm_vs_lr.pdf
-
-
-
-
-convex optimization => LP + QP
-LP 
-	=> simplex + dual + kkt + max min (graph problem in general) + bi partite, image segmentation + compressive sesning, sparse recovery + l1 minimization + click ad revenue optimization + portfolio optimization(QP, linear program with random cost) + Worst-case risk analysis (semi defnite matrix) + Model fitting i.e. logistic regression + linear regression (Huber regression)
-
-	=> another perspective: graph problem
-		=> MAx flow can be encoded as LP, but all graph problems ?? LP solve pagerank ??
-		=> TSP
-			=> https://hal.archives-ouvertes.fr/inria-00504914/document
-		=> operation research graph problems..??
-	=> e.g. military transhippment, max flow, bi partite
-	=> function convexity: DCP (http://www.cvxpy.org/en/latest/tutorial/dcp/) => tree visualization to show convexity
-	=> http://www.cvxpy.org/en/latest/tutorial/advanced/
-	=> http://www.cvxpy.org/en/latest/examples/index.html
-	=> https://blog.quantopian.com/markowitz-portfolio-optimization-2/
-	=> https://ocw.mit.edu/courses/mathematics/18-s096-topics-in-mathematics-with-applications-in-finance-fall-2013/lecture-notes/MIT18_S096F13_lecnote14.pdf
-	=> https://sites.math.washington.edu/~burke/crs/408/fin-proj/mark1.pdf
-	=> constraint being semidefinite ??
-	=> why dual == lagrangian ??
-	=> dual/u meaning if objective not linear??
-	=> determinat >0 == eigen value >0 == positive semi definte ??
-	=> eignevalue decomposition == pagerank ??
-	=> LP could be encoded as Semi definite ??
-	=> lagrangian vs convex optimization ??
-
-	=> QP is a subset of LP
-
-QP
-	=> least square: QP
-	=> SVM
-	=> QP vs LP
-
-
-Proof of convexity
-
-
-
-
-
-
-
-
-
-
-
-
-============================================================================================================================================
-============================================================================================================================================
-============================================================================================================================================
-============================================================================================================================================
-
-
-
-## convex optimization
-	Applications:
-		=> assets amount in portfolio with expected return minimize risk, airplane control surface deflections, optimal sizing of circult design, power allocated to wireless transmitter, where to transmit signal, data center staff bandwidth memory to allocate, staff scheduling etc.
-		=> engineering design: x represents a design e.g. circuit, device, structure, e.g. steer frame of a building, cross section area of beams of the building => optimize for a combination of cost, weight, power and other performance requirements
-		=> x could also represents parameters in a model in machine learning model, constraints impose requirements on model parameters e.g. non negative if source of admission, parameters has to be positive-semidefinite if represents covariance
-
-
-	Formal definition:
-		=> stephen boyd https://www.youtube.com/watch?v=C7gZzhs6JMk
-		=>  equality constraints have to be linear, affine function
-		=> constraint function have to be convex i.e. satisfy jensen inequality
-
-	very like information theory
-
-	most optimization problem is intractable. convex optimization is tractable.
-
-	convexity is in large part what's driving computational tractability of LP
-
-	LP n duality vs convex optimization
-		=> LP duality not going to work outside of linear constraints 
-		=> transition from linear to quadratic 
-		=> lagadrian as another to express dual in convex constraints
-		=> soft margin primal svm, dual svm (Alexander Ihler, virginia tech)
-		=> KKT dual, optimizing over lagrange multipler
-		=> lagrangian optimization (how to transition from LP to lagrangian??)
-		=> lagrangian quantifies misses (linear) instead of LP strictly prohibits miss (or lambda/cost is infinity)
-		=> gives convexity even original problem is not convex
-		=> parameterized lower bound on the optimal value of the problem (certificate proving optimal n quit)
-		=> use dual form to solve for nu
-		=> dual when data points smaller than num of features
-		=> large margin princple
-		=> trade off between margin and error
-
-
-	Dual
-		weak duality => difficult problem, non trivial lower bound
-		=> if not convex, gap between primal and dual optimal 
-		WHY ??
-		=> simpler, faster, fewer constraints, for many variables few constraints case (R10M problem, 10 constraints => dual only R10, 10 constraints => as most variables have no constraints on them )
-		=> dual is guaranteed to be concave even if primal is convex
-		=> solution of lasso is stable
-		=> solve both together, bound how far you are from the result, stopping criteria for algorithm
-		=> dual function, everywhere is an underestimate
-		
-		TO GET DUAL:
-		=> lagrangian, lower bound on constraint 
-		=> set d lag/dx = 0, solve x
-		=> dual: g(u,v) = sub x into orginal primal
-		=> solve for dual(concave), project on constraint then projective gradient descent
-
-		
-
-	Lagrangian 
-		=> multivariable cal: max obj with constraints, set lagrangian to zero is same as solving for pt w gradient vectors n hence max obj
-		=> cost of violating constraints?? lamda * constraints
-		=> lambda: lagrange multiplier associated w f(x), also called dual variable
-
-
-	Lagrange dual function(not necessarily convex)
-		=> concave even original function(lagrangian) not convex
-		=> parameterized lower bound of optimal value
-		=> dual function always concave
-		=> standard function dual form
-		lagrange: necessary but not sufficient by its own => second order condition
-
-
-
-
-
-	KKT condition
-		=> 1st order necessary condition
-		=> lagrangian could only solve equality constraint
-		=> test additional condition to ensure optimality
-		=> feasible + no direction improves objective or feasible (lagrangian) + complimentary slackness(lagrange * constraints = 0, either 1 needs to be zero at optimal condition) + positive lagrange multiplier
-			=> https://www.youtube.com/watch?v=eREvLgRJWrE
-			=> https://www.youtube.com/watch?v=ws38Jon_-_E (BYU apmonitor.com)
-			=> https://www.youtube.com/watch?v=JTTiELgMyuM
-			=> https://www.youtube.com/watch?annotation_id=annotation_674267549&feature=iv&src_vid=JTTiELgMyuM&v=AQWy73cHoIU
-		=> sequential quadratic programming (SQP) if inequality constraints or non linear objective function or constraints 
-			=> modified version of KKT, form search direction, form quadratic approximation of the problem, sequential solve those by getting better n better direction i.e. constraint/KKT1 feasbility test likely violated, set constraint to be inactive, set lamda = 0
-			=> intuition: see which constraint is active 
-
-		=> inverse matrix == solve for x
-
-	conjugate functions
-		=> 
-		=> 
-
-
-	LP vs linear regression vs SVM vs lasso vs regression
-		=> difference algorithm but all instances of same thing - stephen boyd
-	
-
-	Convex function ? why lazer treatment is convex problem ?
-		=> convexity definition: jensen inequality
-			=> intuitively meaning there is only 1 global optimal + closer n closer to optimal
-		=> affine function is convex
-		=> convex example: 
-			=> linear least sqaure, lazer tumor cell
-			=> minimize sum of norm of total variation of pixel matrix, guess pixel in corrupted parts of image
-			=> SVM convexity is preserved
-			=> norm (if vector) or trace (sum of inner product of matrix mulitplication)
-			=> log of determinant
-
-	Semi-definite
-		=> ellipsoids NOT hyperbola
-		=> convex if Hessian matrix is positive semi definite, concave is negative semi definite
-			=> hessian matrix is a square matrix of second order partial derivatives of function of x parameters, with row being 1st order differentiate against parameter, col being 2nd order differentiate against parameter
-			=> positive semi definite: z.T dot H dot z == positive
-
-			=> Definiteness is a useful measure for optimization. Quadratic forms on positive definite matrices are always positive for non-zero xx and are convex. This is a very desirable property for optimization since it guarantees the existences of maxima and minima, allow you to use the Hessian matrix to optimize multivariate functions
-				=> https://math.stackexchange.com/questions/217244/what-is-the-importance-of-definite-and-semidefinite-matrices
-			=> 
-
-		=> 
-
-	Convexity proof ?
-		=> case by case, not always easy to check whether or not a given function is convex, but there is mature analytic toolbox for this purpose taught in ee364=> common cases: LP, QP, QPQP, semi definite programming etc.
-
-	
-
-	SVM + derive dual form of SVM
-		=> show SVM is optimizing contrainted system: quadratic programming with quadratic cost function of parameters n linear constraints
-		=> lagar
-
-		=> ref: uc irlvine => 1d example: max margin == max distance between positive and negative + w perpendicular to decision boundary
-		=> https://jeremykun.com/2017/06/05/formulating-the-support-vector-machine-optimization-problem/
-		=> MIT An Idiot’s guide to Support vector machines (SVMs) + MIT 6034
-		=> andrew ng
-		=> siraj
-
-		=> proof of distance: https://brilliant.org/wiki/dot-product-distance-between-point-and-a-line/
-		https://brilliant.org/wiki/dot-product-definition/
-		https://mathinsight.org/distance_point_plane
-
-
-
-	=> cs168 convex n linear programming + matrix completion, sparse recovery, compression image
-
-
-
-## graphical
-
-linear programming == algorithm to solve this problem not doing it mannually !!
-
-second order approximation requires solving linear system at each step
-
-
-
-
-
-
-
-
-## Max primal is same as min dual
-	Motivation
-		=> another way to compute the same question
-		=> dual is easier becasue constraint tend to be easier
-		=> faster if x vector(data dimension) dimension really big n u vector(no of constraints) is small 
-	
-	proof + intuition + graphical
-		=> cmu proof
-			=> 2 variables to demo minimizing tightest bound 
-			=> general LP i.e. multiple variable
-			feasible dual solutions correspond to bounds on the best-possible primal objective function value (derived from taking linear combinations of the constraints), and the optimal dual solution is the tightest-possible such bound. (cs261)
-
-	=> upper bound(bigger than sign), lower bound (smaller than)
-	=> 05b: constraints multiplied by u does not change the linear constraint graphically
-		=> you cannot just flip the sign, graphically is not the same
-
-
-	know optimal without graphical
-	transpose + computing same
-		=> u is ratio test n pivoting in ERO => contribution of rhs of that constraint on obj value (if objective function is linear)
-		=> resultant after ERO(picking extreme point) being bigger than objective function but minimize such value
-		=> extreme point we pick is outside the constraints
-		=> all those u are ERO to pick extreme points (i.e. decision variable is 1 n rhs is that decision's value)
-		=> add more portion of decision variable and hence rhs bigger
-		=> in 2 d variable case, z (value) is 3rd dimension, if all decision variable more portion then must be higher value
-		=> w indicates rhs after ERO (ratio test)
-
-		One way to visualize maximizing primal is equivalent to minimizing dual:
-		i.e. max z = min w @6:00
-
-		Given a typical 2 constraints function 2 variable case in 3d space with x_1 being x-axis, x_2 being y-axis, value of objective function is the z-axis,  z-axis has the highest value at optimal extreme point.
-
-		u_1, u_2, u_3 denotes all possible row operations to locate extreme points in original max case. By setting new constraints (u_1+4u_2 - u_3) to more than original objective function value (30) is same as locating extreme points multiplied by arbitrary constant. i.e. locating all points crossing or on original constraints lines. 
-
-		w denotes new value of objective function after located new points (which is constrained to be across constraint lines), minimizing that is same as looking for the same constraint line as original primal problem.
-
-		in short 
-		=> new u constraints: different ERO to locate extreme points, that extreme point is more portion than original n hence higher value (if all decision variable is more portion, then value in objective function must be higher)
-		=> min w: w is rhs after ERO, minimizing that is same as looking at the same constraint line
-
-		=> cs261 proof: 
-
-
-	strong law of duality
-	complementary slackness
-		=> su = ex == 0 if optimal 
-		=> if slack == 0 then maximised in that constraint => u has been changed i.e. linear operation happened
-
-	transportation simplex - 
-		objective: change 4 variables to satisfy row and col contraints
-		u n v are telling how much columns and rows have more cost than your cell
-		i.e. motiviation to change such row and col's value => see chain effect on how change of 1 value affects other row n col
-		entering variable: highest row and col cost reduction 
-
-		i dont have full proof, this is just for high level intuition:
-		To satisfy row and col constraints requirements, we need to change 4 variables.
-		u and v are indicators of how much more cost you could reduce if you make a change in its row or col	
-		i.e. motivation to make a change in such row or col
-		and hence entering variable indicates which row and col to make a change you reduce the most cost
-		looping is sanity check to keep both row and col within constraints
-
-
-
-
-
-
-## biparttite matching
-
-## l1 minimization
-
-
-
+Since such objective formulation is convex so we could optimize to get global minimal.
 
 
 ## reference:
-https://www.youtube.com/watch?v=C7gZzhs6JMk
-[here](http://www.stat.cmu.edu/~ryantibs/convexopt-S15/scribes/10-dual-lps-scribed.pdf)
+[Yong Wang, amazing Professor from SUNY Binghamton](https://www.youtube.com/watch?v=f3Gz4SGQV9M&index=14&list=PLgA4wLGrqI-ll9OSJmR5nU4lV4_aNTgKx)
+[Gilbert Strand, amazing Rhodes Scholar from MIT teaching 18.06](https://www.youtube.com/watch?v=osh80YCg_GM)
+[Stephen Boyd: Introduction to convex optimization](https://www.youtube.com/watch?v=C7gZzhs6JMk)
+[MIT SVM for idiots](web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf)
+[MIT 6.034 AI Patrick Winston](https://www.youtube.com/watch?v=_PwhiWxHK8o)
+[Jeremy Kun, amazing Google Software Engineer, Mathematics PhD from UI Chicago](https://jeremykun.com/2017/06/05/formulating-the-support-vector-machine-optimization-problem/)
+[Jessica Noss, amazing Google Software Engineer again, MIT AI researcher](https://www.youtube.com/watch?v=ik7E7r2a1h8)
 
-
-http://math.mit.edu/~gs/linearalgebra/ila0403.pdf
-
-LP: lmu + australia math
-svm: mit svm for idiots + coursera svm + jess noss + jeremy kunn
-duality + kkt: operation research + cmu ryan + stephen
 
 
 
