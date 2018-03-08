@@ -16,6 +16,8 @@ mathjax: true
 
 ![]({{"/assets/LP_1/simplex.jpg"|absolute_url}})
 
+![](/assets/LP_1/simplex.jpg)
+
 <div class="imgcap">
 <img src="/assets/LP_1/simplex.jpg" height="400">
 </div>
