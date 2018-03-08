@@ -435,40 +435,24 @@ $$
 
 ## SVM
 
-=> formulate SVM cost function to optimize
-
-Formulate trainable parameters in cost function to do classification
-
-1. Decision rule/boundary/gutter
+Since there are quite some very important variables in SVM to keep track off and different textbooks give them different names, it might be easier to understand if defined beforehand.
 
 <div class="imgcap">
-<img src="/assets/LP_1/svm-decision-rule" height="400">
-</div>	
+<img src="/assets/LP_1/svm-problem" height="400">
+</div>
 
-Decision rule or hyperplane is the line that separates which separates all data points with +ve labels from those with -ve labels.  i.e. a linear subspace that splits all of data points into two halves.
-
-inner product between data point and normal determines the sign of data points, inner product is equivalent to project data onto normal, if the projected length is longer than margin it is a +ve sample, otherwise it is -ve.
-
-Projection means take only the components of x that point in the direction of w. Another way to think of this is that the projection is x, modified by removing any part of x that is perpendicular to w.
-
-<div class="imgcap">
-<img src="/assets/LP_1/svm-inner" height="400">
-</div>	
-
-[for a good visualization](http://j2kun.github.io/decision-rule/index.html)
-
-$\vec{w}$ is normal
+\\(H_0\\) is decision boundary/medium/hyperplane/hypothesis
+$$\vec{w}$$ is normal
 \\(\vec{w}\\)
-w is normal to decision boundary we are optimizing for. and c is the margin we set
-This 90-degree boundary is the line perpendicular to w.
+w is called normal and \\(perp\\) to decision boundary \\(H_0\\) we are optimizing for.
+\\(H_1\\) and \\(H_2\\) are gutters where support vectors, i.e. the closest +ve and -ve data point, lies on
+Gutters and decision boundary together form a street since it looks like a street.
 
-b
-offset
-bias of "shifted hyperplane" that shifts normals w of hyperplanes that pass through the origin
-medium to gutter(line the closest +ve and -ve data point lies on, those points are also called support vectors as they support the boundaries) ??
+b is shift/bias/offset that primarily shift the medium line that originally pass through the origin
 
-margin 
-area between 2 gutters
+\\(x_+\\) is datapoints with +ve label, \\(x_-\\) is datapoints with -ve label
+
+
 
 Formally:
 Labeled datasets 
@@ -481,12 +465,96 @@ $$
 w \in\mathbb{R}^n
 $$
 
-gutter
 
-Shift
+
+Shift/bias/offset
 $$
 b \in\mathbb{R}
 $$
+
+
+
+=> formulate SVM cost function to optimize
+
+Formulate trainable parameters in cost function to do classification
+
+
+
+
+1. Decision rule
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-decision-rule" height="400">
+</div>	
+
+$$
+\begin{align}
+\vec{w} \cdot \vec{x} = 0
+\end{align}
+$$
+
+Decision rule or hyperplane is the line that separates which separates all data points with +ve labels from those with -ve labels. i.e. \\ (H_0\\)
+Graphically, \\(\vec{w} \cdot \vec{x} + b = 0\\) can be expressed as \\(y = ax + b\\). By setting \\(\vec{w} \cdot \vec{x} + b\\) to zero, we are optimizing for \\(\vec{w}\\) and \\(b\\) that maximizes the margin. 
+
+Next step we need to define gutters
+
+$$
+\begin{align}
+\vec{w} \cdot \vec{x_1} + b \ge 1 \\
+\vec{w} \cdot \vec{x_1} + b \le -1
+\end{align}
+$$
+
+add mathematical convenience variable y, both equation becomes the same as when y = -1 it flips the sign
+
+$$
+\begin{align}
+y_i (\vec{w} \cdot \vec{x_1}) + b \ge 1 \\
+y_i (\vec{w} \cdot \vec{x_1}) + b \ge 1 \\
+
+y_i (\vec{w} \cdot \vec{x_1}) + b -1 \ge 0 \quad \text{for all points}\\
+y_i (\vec{w} \cdot \vec{x_1}) + b -1  = 0 \quad \text{for support vectors that lies on gutter}
+\end{align}
+$$
+
+
+We can see inner product between data points and normal determines the sign of data points.
+Inner product is equivalent to project data onto normal, if the projected length is longer than margin it is a +ve sample, otherwise it is -ve.
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-inner" height="400">
+</div>	
+
+[here is a good visualization](http://j2kun.github.io/decision-rule/index.html)
+
+Projection means take only the components of x that point in the direction of w. Another way to think of this is that the projection is x, modified by removing any part of x that is perpendicular to w.
+
+
+
+Now finally we are ready to formulate SVM optimization objective. All we need to do is substitute constraints into decision boundary and dot the difference between +ve and -ve support vectors with unit normal vector. Projection onto normal with normal equals to 1 directly calculates the street width.
+
+$$
+\begin{align}
+y_i (\vec{w} \cdot \vec{x_1}) + b -1  = 0 \quad \text{for support vectors that lies on gutter}
+y_i (\vec{w} \cdot \vec{x_1}) = 1 - b
+\end{align}
+$$
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-graphical-proof" height="400">
+</div>	
+
+
+
+As such, final form of optimization function:
+$$ 
+\begin{aligned} & \min_{w}  \frac{1}{2} \| w \|^2 & \\ \textup{subject to \ \ } & (\langle x_i, w \rangle + b) \cdot y_i \geq 1 & \textup{ for every } i = 1, \dots, m \end{aligned}
+$$
+
+
+
+
+As a convex optimization task, we want to spread the gutter as far away until it reaches 
 
 
 normal w: scale length of w to force \\( w,x \\) = 1
@@ -513,6 +581,8 @@ constraints translate to
 
 3. final form 
 
+
+
 <div class="imgcap">
 <img src="/assets/LP_1/svm-graphical-proof" height="400">
 </div>	
@@ -523,6 +593,7 @@ constraints translate to
 
 \displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0
 
+$$\displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0$$
 
 
 Intuition on why norm of w is changing
