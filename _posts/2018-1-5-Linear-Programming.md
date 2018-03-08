@@ -435,10 +435,137 @@ $$
 
 ## SVM
 
-=> SVM quantify a better decision boundary, optimization exlicitly tries to maxmize margin between data
-=> compared to logistic regression, remove scale invariance
+=> formulate SVM cost function to optimize
 
-\\(\theta_0\\)
+Formulate trainable parameters in cost function to do classification
+
+1. Decision rule/boundary/gutter
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-decision-rule" height="400">
+</div>	
+
+Decision rule or hyperplane is the line that separates which separates all data points with +ve labels from those with -ve labels.  i.e. a linear subspace that splits all of data points into two halves.
+
+inner product between data point and normal determines the sign of data points, inner product is equivalent to project data onto normal, if the projected length is longer than margin it is a +ve sample, otherwise it is -ve.
+
+Projection means take only the components of x that point in the direction of w. Another way to think of this is that the projection is x, modified by removing any part of x that is perpendicular to w.
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-inner" height="400">
+</div>	
+
+[for a good visualization](http://j2kun.github.io/decision-rule/index.html)
+
+w is normal to decision boundary we are optimizing for. and c is the margin we set
+This 90-degree boundary is the line perpendicular to w.
+
+b
+offset
+bias of "shifted hyperplane" that shifts normals w of hyperplanes that pass through the origin
+medium to gutter(line the closest +ve and -ve data point lies on, those points are also called support vectors as they support the boundaries) ??
+
+margin 
+area between 2 gutters
+
+Formally:
+Labeled datasets 
+$$
+D = {(x_i, y_i)|i = 1,...,m, x_i \in\mathbb{R}^n, y_i \in {1,-1}}
+$$
+
+Hypothesis/medium defined by normal
+$$
+w \in\mathbb{R}^n
+$$
+
+gutter
+
+Shift
+$$
+b \in\mathbb{R}
+$$
+
+
+normal w: scale length of w to force \\( w,x \\) = 1
+
+	=> inner product defines a hyperplane
+
+
+2. mathematical convenience
+
+Given data points, we add constraints to ensure street width. 
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-constraint" height="400">
+</div>	
+
+
+then add mathematical convenience, variable y to denote +ve or -ve label of data
+
+samples on the gutter/margin is exactly zero, all +ve data points projected onto a optimized normal should be bigger than 1 (margin).
+
+
+constraints translate to 
+
+
+3. final form 
+
+<div class="imgcap">
+<img src="/assets/LP_1/svm-graphical-proof" height="400">
+</div>	
+
+
+
+
+
+\displaystyle (\langle x_i, w \rangle + b) \cdot y_i \geq 0
+
+
+
+Intuition on why norm of w is changing
+	=> scaling
+
+
+
+
+
+
+
+	=> SVM quantify a better decision boundary, optimization exlicitly tries to maxmize margin between data, 
+	=> pick best hyperplane
+
+	2. 
+
+
+=> compared to logistic regression, remove scale invariance, SVM computational advantages and easier optimization problem
+=> use w instead of log theta 
+
+	
+=> show SVM is optimizing contrainted system: quadratic programming with quadratic cost function of parameters n linear constraints
+=> lagar
+
+		=> ref: uc irlvine => 1d example: max margin == max distance between positive and negative + w perpendicular to decision boundary
+		=> https://jeremykun.com/2017/06/05/formulating-the-support-vector-machine-optimization-problem/
+		=> MIT An Idiot’s guide to Support vector machines (SVMs) + MIT 6034
+		=> andrew ng
+		=> siraj
+
+		=> proof of distance: https://brilliant.org/wiki/dot-product-distance-between-point-and-a-line/
+		https://brilliant.org/wiki/dot-product-definition/
+		https://mathinsight.org/distance_point_plane
+
+$$
+\begin{align}
+
+\theta_0 + \theta_1 x_1 + \theta_2 x_2 + ...\\
+
+b + w_1 x_1 + w_2 x_2 + ...
+
+\end{align}
+$$
+
+
 
 
 ============================================================================================================================================
