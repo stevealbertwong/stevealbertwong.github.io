@@ -7,45 +7,6 @@ date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
-$$
-\documentclass[twocolumn]{article}
-\usepackage{blindtext}
-\usepackage{enumitem}
-\usepackage{xcolor}
-\begin{document}
-\blindtext Coco likes fruit. Her favorites are:
-\begin{description}[font=$\bullet$~\normalfont\scshape\color{red!50!black}]
-\item [Bananas] yellow and banana shaped
-\item [Apples] red and round
-\item [Oranges] orange and round
-\item [Lemons] yellow, kinda round
-\end{description}
-\blindtext
-\end{document}
-$$
-
-$$
-\documentclass[12pt]{article}
-\renewcommand\descriptionlabel[1]{$\bullet$ \textbf{#1}}
-\begin{document}
-\thispagestyle{empty}
-\begin{description}
-  \item [myDescriptionLabel] myItem
-\end{description}
-\end{document}
-$$
-
-$$
-\begin{itemize}
-
-\item one.
-
-\item two. 
-
-\item  three.
-
-\end{itemize}
-$$
 
 ## proxy.cpp
 
@@ -55,13 +16,13 @@ $$
 2. associate file stream with a port number for kernel to direct incoming packet
 3. 
 
-\\(\textbullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer
+\\(\bullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer
 
-\\(\textbullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
+\\(\bullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
 
-\\(\textbullet \\) bind(): fill file system struct pointer with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
+\\(\bullet \\) bind(): fill file system struct pointer with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
 
-\\(\textbullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Incoming connections are going to wait in this queue until you accept() them.
+\\(\bullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Incoming connections are going to wait in this queue until you accept() them.
 
 ```
 void HTTPProxy::CreateServerSocket(int port){
