@@ -7,7 +7,7 @@ date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
-
+$$
 \documentclass[twocolumn]{article}
 \usepackage{blindtext}
 \usepackage{enumitem}
@@ -22,7 +22,30 @@ mathjax: true
 \end{description}
 \blindtext
 \end{document}
+$$
 
+$$
+\documentclass[12pt]{article}
+\renewcommand\descriptionlabel[1]{$\bullet$ \textbf{#1}}
+\begin{document}
+\thispagestyle{empty}
+\begin{description}
+  \item [myDescriptionLabel] myItem
+\end{description}
+\end{document}
+$$
+
+$$
+\begin{itemize}
+
+\item one.
+
+\item two. 
+
+\item  three.
+
+\end{itemize}
+$$
 
 ## proxy.cpp
 
