@@ -7,22 +7,22 @@ date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
+Assuming this code run in the middle server when client trys to connect to google.
 
 ## proxy.cpp
 
 ### void HTTPProxy::CreateServerSocket(int port)
 
-1. create file stream in this process
-2. associate file stream with a port number for kernel to direct incoming packet
-3. 
+1. create file stream in this process stack
+2. configure port number, start accepting request and backlog
 
-\\(\bullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer
+\\(\bullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer for incoming request connection
 
 \\(\bullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
 
 \\(\bullet \\) bind(): fill file system struct pointer with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
 
-\\(\bullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Incoming connections are going to wait in this queue until you accept() them.
+\\(\bullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Kernel makes incoming connection wait until you accept() them.
 
 ```
 void HTTPProxy::CreateServerSocket(int port){
@@ -51,7 +51,7 @@ void HTTPProxy::CreateServerSocket(int port){
 
 
 
-
+---
 
 
 
@@ -61,23 +61,31 @@ void HTTPProxy::CreateServerSocket(int port){
 
 ### void ProxyRequest()
 
-Method called in main.cpp request listening while loop to spawn proxy request in multi-process fashion.
+Quarterback method called in main.cpp "request listening while loop" to spawn proxy request in multi-process fashion.
 
-1. receive client's request
-2. forward client's request to google
-3. receive and copy client request from stream to buf
+1. kernel creates new file stream for new incoming connection
+2. receive and copy client request from stream to request_message
+3. HTTP Request Parsing Library check request format
+4. connect to google's file stream 
+5. send request to google
+6. proxy request back client
 
-\\(\textbullet \\)accept(): Once you've gone through the trouble of getting a SOCK_STREAM socket and setting it up for incoming connections with listen(), then you call accept() to actually get yourself a new socket descriptor to use for subsequent communication with the newly connected client.
 
-\\(\textbullet \\)inet_ntoa(): convert network IP addresses from a dots-and-number format (e.g. "192.168.5.10") to a struct in_addr and back
+\\(\bullet \\)accept(): Once set SOCK_STREAM socket with bind() listen(), accept() reply to kernal to get the NEW client socket descriptor/file system pointer of new incoming connection. Accept() also store client's address and port in struct sockaddr_in clientAddr.
 
-\\(\textbullet \\)ntohs(): network byte order to host byte order short, depending on sent data type
+\\(\bullet \\)inet_ntoa(): convert network IP addresses from a dots-and-number format (e.g. "192.168.5.10") to a struct in_addr and back
+
+\\(\bullet \\)ntohs(): network byte order to host byte order short, depending on sent data type
 
 Different computers use different byte orderings internally for their multibyte integers. Intel did it the weird way "little-endian", and Motorola, IBM etc. "big-endian" byte orderings become prefered network byte ordering. If receving from PowerPC, ntohs() does nothing since already in Network Byte Order but if receiving from Intel machine ntohs() swap all the bytes around.
 
-\\(\textbullet \\)strstr(request_message, "\r\n\r\n"): return a ptr of first occurence of "\r\n\r\n" in request_message, loop thru until request_message until \r\n\r\n
+\\(\bullet \\)recv(): receive and copy client request from NEW client stream to request_message
 
-\\(\textbullet \\)recv(): Once socket up and connected, read incoming data on TCP SOCK_STREAM sockets
+\\(\bullet \\)CreateRemoteSocket(): return file stream of google server
+
+\\(\bullet \\)SendRequestRemote(): send client's request to google
+
+\\(\bullet \\)ProxyBackClient(): receive google's response then proxy back to client
 
 ```
 void HTTPProxy::ProxyRequest(){
@@ -144,6 +152,113 @@ void HTTPProxy::ProxyRequest(){
     }
 }
 ```
+
+### CreateRemoteSocket():
+
+1. DNS lookups and write to struct addrinfo
+2. configure google socket 
+3. connect to google to get google file stream
+
+\\(\bullet \\)getaddrinfo(): given address and port, DNS lookups and write to struct addrinfo
+
+\\(\bullet \\)socket(): configure socket for google server
+
+\\(\bullet \\)connect(): file system pointer connected to google's server
+
+```c
+
+int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
+    // given address and port, configure hints to get results about host name
+    struct addrinfo hints, *servinfo;
+    memset(&hints, 0, sizeof hints);
+    hints.ai_family = AF_UNSPEC; // use AF_INET6 to force IPv6
+    hints.ai_socktype = SOCK_STREAM;
+    
+    if (getaddrinfo(remote_addr, port, &hints, &servinfo) !=0){
+        cout << " Error in server address format ! \n" << endl;
+    }
+
+    // once get hostname info, creates remote socket n make a connection on socket
+    int remote_socket;
+    if((remote_socket = socket(servinfo->ai_family, servinfo->ai_socktype, servinfo->ai_protocol))<0) {
+        cout << " Error in creating socket to server ! \n" << endl;
+    }
+    
+    if(connect(remote_socket, servinfo->ai_addr, servinfo->ai_addrlen) <0){
+        cout << " Error in connecting to server ! \n" << endl;
+    }
+    
+    freeaddrinfo(servinfo);
+    return remote_socket;
+}
+```
+
+
+### SendRequestRemote(): 
+
+\\(\bullet \\)send(): send client's request to google
+
+```
+void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int buff_length){
+	string temp;
+	temp.append(req_string);
+    int totalsent = 0;
+    int senteach;
+    cout << "SendRequestRemote : "<< totalsent << " , " << buff_length << endl;
+	while (totalsent < buff_length) {
+        cout << "about to send to remote" << endl;
+		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
+            cout << "error sending ot remote" << endl;
+        }
+        
+        // senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
+        cout << "sent to remote" << senteach <<  endl;
+		totalsent += senteach;
+        cout << "total sent to remote: " << totalsent << endl;
+	}	
+}
+```
+
+
+### ProxyBackClient():
+
+\\(\bullet \\)recv(): receive google's response
+
+
+\\(\bullet \\)send(): send google's response to client
+
+
+```
+void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
+    int MAX_BUF_SIZE = 5000;
+	int buff_length;
+	char received_buf[MAX_BUF_SIZE];
+
+    // receive from remote's response, send back to client
+	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
+        cout << "received from remote: "<< buff_length << endl;
+        int totalsent = 0;
+        int senteach;
+        while (totalsent < buff_length) {		
+            if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {                
+                fprintf (stderr," Error in sending to server ! \n");
+                    exit (1);
+            }
+            totalsent += senteach;
+            cout << "sending back to client" << totalsent << endl;
+		memset(received_buf,0,sizeof(received_buf));	
+    	}      
+    }
+}
+```
+
+
+
+
+
+
+
+
 
 
 ## reference:
