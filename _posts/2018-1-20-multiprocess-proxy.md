@@ -8,19 +8,37 @@ mathjax: true
 ---
 
 
+\documentclass[twocolumn]{article}
+\usepackage{blindtext}
+\usepackage{enumitem}
+\usepackage{xcolor}
+\begin{document}
+\blindtext Coco likes fruit. Her favorites are:
+\begin{description}[font=$\bullet$~\normalfont\scshape\color{red!50!black}]
+\item [Bananas] yellow and banana shaped
+\item [Apples] red and round
+\item [Oranges] orange and round
+\item [Lemons] yellow, kinda round
+\end{description}
+\blindtext
+\end{document}
+
+
 ## proxy.cpp
 
 ### void HTTPProxy::CreateServerSocket(int port)
 
-\\(\textbullet \\) socket(): configure the right socket to get Socket Descriptor file stream
+1. create file stream in this process
+2. associate file stream with a port number for kernel to direct incoming packet
+3. 
 
-\\(\textbullet \\) setsockopt(): allow other sockets to bind to this port, avoid "Address already in use" error 
+\\(\textbullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer
 
 \\(\textbullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
 
-\\(\textbullet \\) bind(): associate socket/file stream with a port on your local machine. Port number is used by the kernel to match an incoming packet to a certain process's socket descriptor
+\\(\textbullet \\) bind(): fill file system struct pointer with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
 
-\\(\textbullet \\) listen(): 
+\\(\textbullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Incoming connections are going to wait in this queue until you accept() them.
 
 ```
 void HTTPProxy::CreateServerSocket(int port){
