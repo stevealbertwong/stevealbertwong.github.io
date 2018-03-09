@@ -3,7 +3,7 @@ layout: post
 comments: true
 title:  "Multi-process proxy"
 excerpt: "in progress"
-date:   2017-01-14 11:00:00
+date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
@@ -12,13 +12,13 @@ mathjax: true
 
 ### void HTTPProxy::CreateServerSocket(int port)
 
-\\(\textbullet \\) socket(): configure the right socket to get mSocketDescriptor file stream
+\\(\textbullet \\) socket(): configure the right socket to get Socket Descriptor file stream
 
-\\(\textbullet \\) setsockopt()
+\\(\textbullet \\) setsockopt(): allow other sockets to bind to this port, avoid "Address already in use" error 
 
-\\(\textbullet \\) serverAddr:
+\\(\textbullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
 
-\\(\textbullet \\) bind():
+\\(\textbullet \\) bind(): associate socket/file stream with a port on your local machine. Port number is used by the kernel to match an incoming packet to a certain process's socket descriptor
 
 \\(\textbullet \\) listen(): 
 
