@@ -253,6 +253,42 @@ void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
 ```
 
 
+## blacklist.cpp
+
+
+\\(\bullet \\)HTTPBlacklist::HTTPBlacklist(): constructor that reads blacklist.txt into a vector of regex
+
+```
+HTTPBlacklist::HTTPBlacklist(const char* file_name){
+    ifstream infile(file_name);
+    while(true){
+        string line;
+        getline(infile, line);
+        regex re(line);
+        blacklist_websites.push_back(re);
+    }    
+}
+```
+
+\\(\bullet \\)is_blacklisted(const char* website): check if the website in contained in vector of regex
+
+```
+bool HTTPBlacklist::is_blacklisted(const char* website){
+    for (const regex& re: blacklist_websites){
+        if (regex_match(website,re)){
+            return true;
+        }
+    }
+    return false;
+}
+```
+
+
+## getpid(), fork(), wait(), execv()
+
+fork(): duplicate current process and its memory space, if pid == 0 it is child, if pid value its parent
+exec(): child process run a different process
+
 
 
 
