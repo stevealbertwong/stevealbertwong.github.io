@@ -7,7 +7,7 @@ date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
-Assuming this code run in the middle server when client trys to connect to google.
+Assuming this code run in the middle server when client trys to connect to https://www.stanford.edu/about/.
 
 ## proxy.cpp
 
@@ -27,11 +27,11 @@ Assuming this code run in the middle server when client trys to connect to googl
 ```
 void HTTPProxy::CreateServerSocket(int port){
 
-    mSocketDescriptor = socket(AF_INET, SOCK_STREAM, 0);
+    proxy_fd = socket(AF_INET, SOCK_STREAM, 0);
     
     const int optval = 1;
     // allow other sockets to bind to this port, "Address already in use" error 
-    setsockopt(mSocketDescriptor, SOL_SOCKET, SO_REUSEADDR, &optval , sizeof(int)); 
+    setsockopt(proxy_fd, SOL_SOCKET, SO_REUSEADDR, &optval , sizeof(int)); 
     
     struct sockaddr_in serverAddr;
     bzero(&serverAddr, sizeof(serverAddr)); // memset
@@ -41,10 +41,10 @@ void HTTPProxy::CreateServerSocket(int port){
     serverAddr.sin_port = htons(port);
     struct sockaddr *sa = (struct sockaddr *) &serverAddr;
     
-    ::bind(mSocketDescriptor, sa, sizeof(serverAddr)); // c libs instead of std::bind
+    ::bind(proxy_fd, sa, sizeof(serverAddr)); // c libs instead of std::bind
     
     const size_t kMaxQueuedRequests = 128;
-    listen(mSocketDescriptor, kMaxQueuedRequests);
+    listen(proxy_fd, kMaxQueuedRequests);
     cout << "listening on port: " << port << endl;    
 }
 ```
@@ -71,7 +71,7 @@ Quarterback method called in main.cpp "request listening while loop" to spawn pr
 6. proxy request back client
 
 
-\\(\bullet \\)accept(): Once set SOCK_STREAM socket with bind() listen(), accept() reply to kernal to get the NEW client socket descriptor/file system pointer of new incoming connection. Accept() also store client's address and port in struct sockaddr_in clientAddr.
+\\(\bullet \\)accept(): turn proxy_fd to client_fd. Once socket set with bind() listen(), accept() reply to kernal to get the NEW client socket descriptor/file system pointer of new incoming connection. Accept() also store client's address and port in struct sockaddr_in clientAddr.
 
 \\(\bullet \\)inet_ntoa(): convert network IP addresses from a dots-and-number format (e.g. "192.168.5.10") to a struct in_addr and back
 
@@ -92,7 +92,7 @@ void HTTPProxy::ProxyRequest(){
     struct sockaddr_in clientAddr;
     socklen_t clientAddrSize = sizeof(clientAddr);
     // write incoming client's connection to sockaddr
-    int client_fd = accept(mSocketDescriptor, (struct sockaddr *) &clientAddr, &clientAddrSize);
+    int client_fd = accept(proxy_fd, (struct sockaddr *) &clientAddr, &clientAddrSize);
     
     const char *clientIPAddress = inet_ntoa(clientAddr.sin_addr);
     uint16_t clientPort = ntohs(clientAddr.sin_port);    
@@ -200,22 +200,21 @@ int HTTPProxy::CreateRemoteSocket(char* remote_addr, char* port){
 
 ```
 void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int buff_length){
-	string temp;
-	temp.append(req_string);
+    string temp;
+    temp.append(req_string);
     int totalsent = 0;
     int senteach;
     cout << "SendRequestRemote : "<< totalsent << " , " << buff_length << endl;
-	while (totalsent < buff_length) {
+    while (totalsent < buff_length) {
         cout << "about to send to remote" << endl;
-		if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
+        if ((senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0)) < 0) {
             cout << "error sending ot remote" << endl;
-        }
-        
+        }        
         // senteach = send(remote_socket, (void *) (req_string + totalsent), buff_length - totalsent, 0);
         cout << "sent to remote" << senteach <<  endl;
-		totalsent += senteach;
+        totalsent += senteach;
         cout << "total sent to remote: " << totalsent << endl;
-	}	
+    }   
 }
 ```
 
@@ -231,27 +230,61 @@ void HTTPProxy::SendRequestRemote(const char *req_string, int remote_socket, int
 ```
 void HTTPProxy::ProxyBackClient(int client_fd, int remote_socket){
     int MAX_BUF_SIZE = 5000;
-	int buff_length;
-	char received_buf[MAX_BUF_SIZE];
+    int buff_length;
+    char received_buf[MAX_BUF_SIZE];
 
     // receive from remote's response, send back to client
-	while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
+    while ((buff_length = recv(remote_socket, received_buf, MAX_BUF_SIZE, 0)) > 0) {
+        
         cout << "received from remote: "<< buff_length << endl;
+        string temp;
+        temp.append(received_buf);
         int totalsent = 0;
         int senteach;
-        while (totalsent < buff_length) {		
+        while (totalsent < buff_length) {       
             if ((senteach = send(client_fd, (void *) (received_buf + totalsent), buff_length - totalsent, 0)) < 0) {                
-                fprintf (stderr," Error in sending to server ! \n");
-                    exit (1);
+                fprintf (stderr," Error in sending to server ! \n");                
             }
             totalsent += senteach;
-            cout << "sending back to client" << totalsent << endl;
-		memset(received_buf,0,sizeof(received_buf));	
-    	}      
+            cout << "sending back to client" << totalsent << endl;          
+        }      
+        memset(received_buf,0,sizeof(received_buf));
     }
 }
 ```
 
+
+## fork()
+
+In version 2 (checkout github branch) I created a multi-process version that spawn children processes whenever there is new request. This very effectively speeds up proxy's request forwarding and proxying back to client speed. I also added blacklist function which reads in a list of user predefined websites to block.
+
+fork(): duplicate current process and its memory space, if pid == 0 it is child, if pid value it is parent
+
+Here is the new main.cpp
+```
+int main(int argc, char *argv[]){
+    
+    struct sockaddr_in clientAddr;
+    socklen_t clientAddrSize = sizeof(clientAddr);
+    HTTPProxy httpproxy(3500);
+    int proxy_fd = httpproxy.getProxyfd();
+    
+    while(true){
+
+        int client_fd = accept(proxy_fd, (struct sockaddr *) &clientAddr, &clientAddrSize);
+        
+        int pid = fork();
+        if(pid==0){            
+            cout << "mp with a common client_fd" << endl;
+            httpproxy.ProxyRequest(client_fd, clientAddr, clientAddrSize);
+        }else{
+            close(client_fd);
+        }
+    }
+
+    return 0;
+}
+```
 
 ## blacklist.cpp
 
@@ -282,14 +315,6 @@ bool HTTPBlacklist::is_blacklisted(const char* website){
     return false;
 }
 ```
-
-
-## getpid(), fork(), wait(), execv()
-
-fork(): duplicate current process and its memory space, if pid == 0 it is child, if pid value its parent
-exec(): child process run a different process
-
-
 
 
 
