@@ -13,8 +13,8 @@ Assuming this code run in the middle server when client trys to connect to googl
 
 ### void HTTPProxy::CreateServerSocket(int port)
 
-1. create file stream in this process stack
-2. configure port number, start accepting request and backlog
+1. create file stream in this process memory space
+2. configure port number, start accepting request and backlog in this process memory space
 
 \\(\bullet \\) socket(): configure the right socket to get socket descriptor/file stream/file system struct pointer for incoming request connection
 
