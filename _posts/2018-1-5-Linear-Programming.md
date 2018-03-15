@@ -465,7 +465,7 @@ $$
 
 As such, final form of optimization function:
 $$ 
-\begin{aligned} & \min_{w}  \frac{1}{2} \| w \|^2 & \\ \textup{subject to \ \ } & (\langle x_i, w \rangle + b) \cdot y_i \geq 1 & \textup{ for every } i = 1, \dots, m \end{aligned}
+\begin{aligned} & \min_{w}  \frac{1}{2} \| w \|^2 & \\ \text{subject to \ \ } & (\langle x_i, w \rangle + b) \cdot y_i \geq 1 & \text{ for every } i = 1, \dots, m \end{aligned}
 $$
 
 
