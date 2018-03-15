@@ -262,22 +262,15 @@ $$
 
 for right hand of above equation:
 
-$$
-\begin{align}
+\\(\bullet \\) \\(x\\) is arbtrary straight lines on left graph, combination on right graph
 	
-	\bullet x &= arbtrary straight lines on left graph, combination on right graph \\
-
+\\(\bullet \\) \\(Ax\\) is arbitrary vectors on column space 
 	
-	\bullet Ax &= arbitrary vectors on column space \\
+\\(\bullet \\) \\(p \\) is b's projected part on column space 
 	
-
-	\# \\(p \\) = b's projected part on column space \\
+\\(\bullet \\) \\(e \\) is perpenducular part in left null space
 	
-	\# \\(e \\) = perpenducular part in left null space \\
-	
-	\# \\(Ax - p \\) = misses from direct projection measured on column space \\
-\end{align}
-$$
+\\(\bullet \\) \\(Ax - p \\) is misses from direct projection measured on column space
 
 Picking any non best lines on the left graph translates to positive \\( \left\Vert Ax - p \right\Vert^2 \\) distance on the right graph (i.e. non zero vector adding to \\(p\\)). \\( \left\Vert Ax - b \right\Vert^2 \\) is minimized when \\( \left\Vert Ax - p \right\Vert^2 \\) is zero where \\( Ax = A\hat x = p\\). Projection matrix formula \\(A^T A \hat x = A^T b\\) find the right combination \\(\hat x\\) to project \\(b\\) onto \\(A\\). Direct projection on right graph happens to coincide with finding best fit line on left graph.
 
