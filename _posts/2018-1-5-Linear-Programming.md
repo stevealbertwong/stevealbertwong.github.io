@@ -419,8 +419,8 @@ Next step we need to define gutters
 
 $$
 \begin{align}
-\vec{w} \cdot \vec{x_1} + b \ge 1 \\
-\vec{w} \cdot \vec{x_1} + b \le -1
+\vec{w} \cdot \vec{x_1} + b &\ge 1 \\
+\vec{w} \cdot \vec{x_1} + b &\le -1
 \end{align}
 $$
 
@@ -428,11 +428,11 @@ add mathematical convenience variable y, both equation becomes the same as when 
 
 $$
 \begin{align}
-y_i (\vec{w} \cdot \vec{x_1}) + b \ge 1 \\
-y_i (\vec{w} \cdot \vec{x_1}) + b \ge 1 \\
+y_i (\vec{w} \cdot \vec{x_1}) + b &\ge 1 \\
+y_i (\vec{w} \cdot \vec{x_1}) + b &\ge 1 \\
 
-y_i (\vec{w} \cdot \vec{x_1}) + b -1 \ge 0 \quad \text{for all points}\\
-y_i (\vec{w} \cdot \vec{x_1}) + b -1  = 0 \quad \text{for support vectors that lies on gutter}
+y_i (\vec{w} \cdot \vec{x_1}) + b -1 &\ge 0 \quad \text{for all points}\\
+y_i (\vec{w} \cdot \vec{x_1}) + b -1  &= 0 \quad \text{for support vectors that lies on gutter}
 \end{align}
 $$
 
