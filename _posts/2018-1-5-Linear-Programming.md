@@ -499,11 +499,17 @@ Since such objective formulation is convex so we could optimize to get global mi
 
 ## reference:
 [Yong Wang, amazing Professor from SUNY Binghamton](https://www.youtube.com/watch?v=f3Gz4SGQV9M&index=14&list=PLgA4wLGrqI-ll9OSJmR5nU4lV4_aNTgKx)
+
 [Gilbert Strand, amazing Rhodes Scholar from MIT teaching 18.06](https://www.youtube.com/watch?v=osh80YCg_GM)
+
 [Stephen Boyd: Introduction to convex optimization](https://www.youtube.com/watch?v=C7gZzhs6JMk)
+
 [MIT SVM for idiots](web.mit.edu/6.034/wwwbob/svm-notes-long-08.pdf)
+
 [MIT 6.034 AI Patrick Winston](https://www.youtube.com/watch?v=_PwhiWxHK8o)
+
 [Jeremy Kun, amazing Google Software Engineer, Mathematics PhD from UI Chicago](https://jeremykun.com/2017/06/05/formulating-the-support-vector-machine-optimization-problem/)
+
 [Jessica Noss, amazing Google Software Engineer again, MIT AI researcher](https://www.youtube.com/watch?v=ik7E7r2a1h8)
 
 
