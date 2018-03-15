@@ -265,10 +265,10 @@ for right hand of above equation:
 $$
 \begin{align}
 	
-	\# \\(x\\) = arbtrary straight lines on left graph, combination on right graph \\
+	\bullet x &= arbtrary straight lines on left graph, combination on right graph \\
 
 	
-	\# \\(Ax \\) = arbitrary vectors on column space \\
+	\bullet Ax &= arbitrary vectors on column space \\
 	
 
 	\# \\(p \\) = b's projected part on column space \\

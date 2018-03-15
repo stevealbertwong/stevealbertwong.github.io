@@ -1,8 +1,8 @@
 ---
 layout: post
 comments: true
-title:  "Multi-process proxy"
-excerpt: "in progress"
+title:  "C++ multi-process proxy"
+excerpt: "proxy server spawn mulitple children processes to proxy client's request implemented in c++ with fork()"
 date:   2017-01-20 11:00:00
 mathjax: true
 ---
@@ -20,7 +20,7 @@ Assuming this code run in the middle server when client trys to connect to https
 
 \\(\bullet \\) struct sockaddr_in serverAddr: form to fill in about server socket information about your address, namely, port and IP address
 
-\\(\bullet \\) bind(): fill file system struct pointer with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
+\\(\bullet \\) bind(): bind file system struct pointer to current host's IP address and fill it with port number to associate socket/file stream with a unique port. port number is used by the kernel to match an incoming packet to a certain process's socket descriptor.
 
 \\(\bullet \\) listen(): fill file system struct pointer with start accepting request and backlog. Backlog is the number of connections allowed on the incoming queue. Kernel makes incoming connection wait until you accept() them.
 
