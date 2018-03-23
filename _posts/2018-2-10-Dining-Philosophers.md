@@ -2,7 +2,7 @@
 layout: post
 comments: true
 title:  "Classic Dining Philosophers deadlock problem, solutions and its analogy to deadlock in multi-threaded server"
-excerpt: "Classic Dining Philosophers deadlock problem, solutions and its analogy to deadlock in multi-threaded server"
+excerpt: "Classic Dining Philosophers deadlock problem, solving it using condition variable and semaphore and its analogy to deadlock in multi-threaded server"
 date:   2017-01-20 11:00:00
 mathjax: true
 ---
@@ -109,7 +109,7 @@ Solution:
 
 Other than design the locks sequence, logically we could limit the threads to only 4 locks so at least 1 thread could go through both locks and release both locks.
 
-We could achieve it with busy waiting, condition variable and semaphore. They all are very similar in terms of limiting the amount of threads going through critical region.
+We could achieve it with busy waiting, condition variable and semaphore. They all are very similar in terms of limiting the amount of threads going through critical region. Condition variable could send and receive signal so it won't hoards cpu time like busy waiting by constanting checking numThreadsAllowed in critical region. Semaphore is condition variable with condition numThreadsAllowed.
 
 ```
 #include <iostream>
@@ -262,7 +262,7 @@ int main(int argc, char const *argv[])
 }
 ```
 
-This actually resembles a multi-threaded server with locks to synchronize resources access. Let me rename the code a little bit. Think of philosopher as threaded function to deal with logic when received a request. Depending on the request types (e.g. post, get, proxy, other headers fields, protocol version etc), resources synchronization lock (e.g. database access, cache, blacklist etc.) could result in a deadlock manner when request comes in parallel fashion.
+The above code actually resembles a multi-threaded server with locks to synchronize resources access. Let me rename the code a little bit. Think of philosopher as threaded function to deal with logic when received a request. Depending on the request types (e.g. post, get, proxy, other headers fields, protocol version etc), resources synchronization lock (e.g. database access, cache, blacklist etc.) could result in a deadlock manner when request comes in parallel fashion.
 
 
 ```
