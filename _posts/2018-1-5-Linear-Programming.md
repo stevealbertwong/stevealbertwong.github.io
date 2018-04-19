@@ -385,7 +385,7 @@ $$
 
 Since there are quite some very important variables in SVM to keep track off and different textbooks give them different names, it might be easier to understand if defined beforehand.
 
-![](/assets/LP_1/svm-problem)
+![](/assets/LP_1/svm-problem.png)
 
 \\(H_0\\) is decision boundary/medium/hyperplane/hypothesis
 $$\vec{w}$$ is normal
@@ -410,7 +410,7 @@ $$
 \end{align}
 $$	
 
-![](/assets/LP_1/svm-decision-rule)
+![](/assets/LP_1/svm-decision-rule.png)
 
 Decision rule or hyperplane is the line that separates which separates all data points with +ve labels from those with -ve labels. i.e. \\ (H_0\\)
 Graphically, \\(\vec{w} \cdot \vec{x} + b = 0\\) can be expressed as \\(y = ax + b\\). By setting \\(\vec{w} \cdot \vec{x} + b\\) to zero, we are optimizing for \\(\vec{w}\\) and \\(b\\) that maximizes the margin. 
@@ -440,13 +440,13 @@ We can see inner product between data points and normal determines the sign of d
 Inner product is equivalent to project data onto normal, if the projected length is longer than margin it is a +ve sample, otherwise it is -ve.
 
 
-![](/assets/LP_1/svm-inner)
+![](/assets/LP_1/svm-inner.png)
 
 [here is a good visualization](http://j2kun.github.io/decision-rule/index.html)
 
 Projection means take only the components of x that point in the direction of w. Another way to think of this is that the projection is x, modified by removing any part of x that is perpendicular to w.
 
-![](/assets/LP_1/svm-inner-2)
+![](/assets/LP_1/svm-inner-2.png)
 
 
 
@@ -460,7 +460,7 @@ y_i (\vec{w} \cdot \vec{x_1}) = 1 - b
 \end{align}
 $$
 
-![](/assets/LP_1/svm-graphical-proof)
+![](/assets/LP_1/svm-graphical-proof.png)
 
 
 As such, final form of optimization function:
@@ -474,17 +474,17 @@ Intuition of scaling normal
 It might not be immediately clear how \\(\min_{w} \frac{1}{2} \| w \|^2 \\) wiggle gutters and medium to the optimal form. 
 
 
-![](/assets/LP_1/svm-train)
-![](/assets/LP_1/svm-train-2)
-![](/assets/LP_1/svm-train-3)
+![](/assets/LP_1/svm-train.png)
+![](/assets/LP_1/svm-train-2.png)
+![](/assets/LP_1/svm-train-3.png)
 
 We could see the smaller the normal, the wider the gutter. This corresponds with maximizing street width \\(\frac{2}{\vec{ \|w\|}}\\). 
 
 If we look closely, there is a scaling variable c for support vectors on gutters.
 
-![](/assets/LP_1/svm-scale-2)
-![](/assets/LP_1/svm-scale)
-![](/assets/LP_1/svm-scale-3)
+![](/assets/LP_1/svm-scale-2.png)
+![](/assets/LP_1/svm-scale.png)
+![](/assets/LP_1/svm-scale-3.png)
 
 $$
 \begin{aligned}

@@ -418,4 +418,27 @@ int main(int argc, char const *argv[])
     return 0;
 }
 ```
+Threadpool
+
+why threadpool?
+visualize threads management in data structure
+=> prioritize function, able to tell no. threads working at any given time, add more available threads if threadpool capacity is full
+
+spawn minimium threads (spawn new thread only when )
+all threads are reusable (detach + while loop mechanism, no join)
+
+dispatcher == slave master
+worker == slaves
+
+how to implement?
+instead of directly spawn a thread to execute func,
+add the func to function queue first, at the same time spawn a dispatcher thread listening to function queue signal, then dependingg on function queue signal and threadpool limit spawn multiple worker thread to do the work
+
+dispather() waits for function queue signal, then find available threads, mark worker_thread working and spawn worker() thread.
+worker() waits for dispatcher signal, then do the actual heavy lifting and mark worker_thread free when finish work.
+
+
+
+
+
 
