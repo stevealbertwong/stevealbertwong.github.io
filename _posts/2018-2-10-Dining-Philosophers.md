@@ -573,8 +573,7 @@ std::future and std::packaged task together provides a way to to block parent th
 
 Thread pool plays an important part in modern web distributed system architecture. In particular load balancing and web servers.
 
-![alt text](https://raw.githubusercontent.com/stevealbertwong/threadpool/master/web_architecture)
-![](https://raw.githubusercontent.com/stevealbertwong/threadpool/master/web_architecture)
+![](https://raw.githubusercontent.com/stevealbertwong/threadpool/master/web_architecture.png)
 
 See the above picture and following code. void ThreadPool::load_balance() optimizes to not spawning all threads right away until threadpool is fully occupied. It maintains a data strucutre of thread workers to assign work to free thread void ThreadPool::worker(size_t id).
 
