@@ -1,12 +1,11 @@
 ---
 layout: post
 comments: true
-title:  "Classic Dining Philosophers deadlock problem, solutions and its analogy to deadlock in multi-threaded server"
-excerpt: "Classic Dining Philosophers deadlock problem, solving it using condition variable and semaphore and its analogy to deadlock in multi-threaded server"
+title:  "Classic Dining Philosophers deadlock problem in multi-threaded server, threadpool with load balancing in scaling modern web architecture distributed system."
+excerpt: "Classic Dining Philosophers deadlock problem is solvable using condition variable, semaphore and threadpool. Such solution goes beyond just solving deadlock in multi-threaded server. It also provides an introduction to understand load balancing and threadpoll in scaling distribution system in modern web architecture."
 date:   2017-01-20 11:00:00
 mathjax: true
 ---
-
 
 
 ![](/assets/miscellaneous/dining-philosopher.png)
@@ -418,27 +417,279 @@ int main(int argc, char const *argv[])
     return 0;
 }
 ```
+
 Threadpool
 
-why threadpool?
-visualize threads management in data structure
-=> prioritize function, able to tell no. threads working at any given time, add more available threads if threadpool capacity is full
-
-spawn minimium threads (spawn new thread only when )
-all threads are reusable (detach + while loop mechanism, no join)
-
-dispatcher == slave master
-worker == slaves
-
-how to implement?
-instead of directly spawn a thread to execute func,
-add the func to function queue first, at the same time spawn a dispatcher thread listening to function queue signal, then dependingg on function queue signal and threadpool limit spawn multiple worker thread to do the work
-
-dispather() waits for function queue signal, then find available threads, mark worker_thread working and spawn worker() thread.
-worker() waits for dispatcher signal, then do the actual heavy lifting and mark worker_thread free when finish work.
+One of the direct solution to dining philospher problem is limit the number of threads. Threadpool is a pool of threads that will not die. These threads will wait diligently after finish task for another new task until they are told to stop. Threadpool reduces the overhead of creating thread as such operation is expensive and creates persistent connection between processes across distribution system. For instance, Facebook uses threadpool in web server and udp packets to creates persistent connection with memcache servers to serve 90% of its content without querying its database. 
 
 
+```
+/*
+Author: Steven Wong
+
+worker thread (operator())
+1. cv.wait() + predicate for each thread
+2. move + pop
+3. task()
 
 
+dispatcher thread (enqueue())
+1. packaged_task
+2. get_future()
+3. lock_guard + emplace
+4. cv.notify()
+
+g++ -std=c++11 -g -O0 main.cpp -o main
+*/
+#ifndef THREAD_POOL_H
+#define THREAD_POOL_H
+
+#include <vector>
+#include <queue>
+#include <memory>
+#include <thread>
+#include <mutex>
+#include <condition_variable>
+#include <future>
+#include <functional>
+#include <stdexcept>
+#include <iostream>
+
+#define LOG(x) std::cout << x << std::endl;
+
+class ThreadPool
+{
+public:
+    ThreadPool(int threads) : stop(false), numThreads(threads), workers(std::vector<std::thread>(threads)) {this->init();};    
+    
+    template<typename F, typename...Args>
+    auto enqueue(F&& f, Args&&... args)
+        -> std::future<typename std::result_of<F(Args...)>::type>;
 
 
+    template<typename F>
+    auto enqueue(F && f) 
+        ->std::future<decltype(f(0))>;
+    
+    ~ThreadPool();
+
+private:
+    void init();
+    bool stop; 
+    size_t numThreads;
+    std::mutex queue_mutex;
+    std::condition_variable cv;
+    std::vector< std::thread > workers;
+    std::queue< std::function<void()> > tasks;
+
+    // functor => web server logic e.g. memcached, DB access(replicate, partition, specialize)
+    class ThreadWorker {
+    private:
+      int tid;      
+      ThreadPool * tpool; // nested class access same parent(reference) class's variable
+    public:      
+      ThreadWorker(ThreadPool * pool, const int id)
+        : tpool(pool), tid(id) {}
+
+      void operator()() {        
+        while (true) {
+          std::function<void()> task;
+          {
+            std::unique_lock<std::mutex> lock(tpool->queue_mutex);
+            tpool->cv.wait(lock, [this]{return this->tpool->stop || !this->tpool->tasks.empty();});
+            if(tpool->stop && tpool->tasks.empty())
+                return;
+            task = std::move(tpool->tasks.front());
+            tpool->tasks.pop();            
+          }
+          task();
+          }
+      }   
+    };
+};
+
+inline void ThreadPool::init(){
+    // naive load balancing
+    for (int i = 0; i < workers.size(); ++i) {        
+      workers[i] = std::thread(ThreadPool::ThreadWorker(this, i));
+    }
+}
+
+
+// with arguments
+template<typename F, typename...Args>
+auto ThreadPool::enqueue(F&& f, Args&&... args)
+    -> std::future<typename std::result_of<F(Args...)>::type> // TODO return type??
+{
+    using return_type = typename std::result_of<F(Args...)>::type;
+    auto task = std::make_shared< std::packaged_task<return_type()> >(
+        std::bind(std::forward<F>(f), std::forward<Args>(args)...)
+    );
+    std::future<return_type> res = task->get_future();
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        if(stop)
+            throw std::runtime_error("enqueue on stopped ThreadPool");                
+        tasks.emplace([task](){ (*task)(); });
+    }
+    cv.notify_one();
+    return res;
+}
+
+// function overload without arguments
+template<typename F>
+auto ThreadPool::enqueue(F && f) 
+    ->std::future<decltype(f(0))> 
+{    
+    auto task = std::make_shared<std::packaged_task<decltype(f(0))(int)>>(std::forward<F>(f));
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        if(stop)
+            throw std::runtime_error("enqueue on stopped ThreadPool");                
+        tasks.emplace([task](){ (*task)(); });
+    }
+    cv.notify_one();
+    return task->get_future();
+}
+
+inline ThreadPool::~ThreadPool(){
+    {
+        std::unique_lock<std::mutex> lock(queue_mutex);
+        stop = true;
+    }
+    cv.notify_all();
+    for(std::thread &worker: workers)
+        worker.join();
+}
+#endif
+
+```
+
+[source on github](https://github.com/stevealbertwong/threadpool/tree/master/steven-threadpool)
+
+A couple of function might be newer as it is introduced in c++11. std::move() converts lvalue (variable with address) to rvalue (temporary object without address). Rvalue reference is introduced to avoid the performance hit due to deep copy and convenience. Here std::move() is used since std::function<void> is rvalue. For instance, std::emplace_back: appends rvalue reference to the queue and call thread() on the fly so there is no unnecessary copy.
+
+std::future and std::packaged task together provides a way to to block parent thread and wait until child thread return.
+
+Thread pool plays an important part in modern web distributed system architecture. In particular load balancing and web servers.
+
+![alt text](https://raw.githubusercontent.com/stevealbertwong/threadpool/master/web_architecture)
+![](https://raw.githubusercontent.com/stevealbertwong/threadpool/master/web_architecture)
+
+See the above picture and following code. void ThreadPool::load_balance() optimizes to not spawning all threads right away until threadpool is fully occupied. It maintains a data strucutre of thread workers to assign work to free thread void ThreadPool::worker(size_t id).
+
+One could easily add logic to check complexity of task, report thread's progress, prioritize function, and combine different threads to work on one task. The idea is that synchronization, threadpool and data structure play a essential part in understanding distributed system in modern web architecture.
+
+
+```
+#include "thread-pool.h"
+
+using namespace std;
+
+ThreadPool::ThreadPool(size_t numThreads) { 
+    workers = vector<worker_t>(numThreads);
+
+    max_allowed_sema.reset(new semaphore(numThreads));  
+    tasks_sema.reset(new semaphore(0));
+    wait_sema.reset(new semaphore(0));
+
+    num_active_threads = 0;
+    tasks_done = 0;
+
+
+    for (size_t workerID = 0; workerID < numThreads; workerID++) {
+        workers[workerID].ready_to_exec.reset(new semaphore(0));        
+        workers[workerID].thunk = NULL;
+    }   
+
+    thread dt([this]() -> void { 
+        this->load_balance();
+    });
+    dt.detach();    
+}
+
+// surgery code to join threads
+void ThreadPool::wait(){
+    wait_sema->wait();  
+}
+
+void ThreadPool::enqueue(const std::function<void(void)>& thunk) {  
+    tasks_done++;
+    tasks_lock.lock();
+    tasks.push(thunk);
+    tasks_lock.unlock();
+            
+    tasks_sema->signal();
+}
+
+void ThreadPool::load_balance() {
+    while (true) {
+
+        // wait for function attached
+        tasks_sema->wait();     
+        // max threads allowed(loop to get threads) 
+        max_allowed_sema->wait();       
+
+        // if no free thread, spawn new worker thread
+        if(free_threads.empty()){           
+            
+            tasks_lock.lock(); // protect tasks, no enqueue when send to thread
+            workers[num_active_threads].thunk = tasks.front();
+            tasks.pop();            
+            tasks_lock.unlock();
+
+            std::thread wt([this](size_t num_active_threads) -> void {
+                this->worker(num_active_threads);
+            }, num_active_threads); // std:bind ??
+            wt.detach();
+            
+            workers[num_active_threads].ready_to_exec->signal();
+            num_active_threads++; 
+
+        // if yes existing thread
+        }else{
+            free_threads_lock.lock();
+            int id = free_threads.front();
+            free_threads.pop();
+            free_threads_lock.unlock();
+
+            tasks_lock.lock();          
+            workers[id].thunk = tasks.front();  
+            tasks.pop();        
+            tasks_lock.unlock();                        
+            workers[id].ready_to_exec->signal();
+        }       
+    }
+}
+
+
+/* 
+THREAD WILL NOT DIE, IT WILL JUST WAIT TO BE REUSED AFTER ONE LOOP
+MULTI-THREADED FUNCTION
+
+worker == web server logic(thunk())
+its predicator == load_balance's signal
+*/
+void ThreadPool::worker(size_t id) {
+    while (true) {          
+        workers[id].ready_to_exec->wait();
+                        
+        /* NOT LOCKED!!!!! OTHERWISE NOT MULTI-THREADING */     
+        workers[id].thunk();
+        workers[id].thunk = NULL;
+        
+        free_threads_lock.lock();
+        free_threads.push(id);
+        free_threads_lock.unlock();
+
+        max_allowed_sema->signal(); 
+        
+        tasks_done--;
+        if(tasks_done == 0){
+            wait_sema->signal();
+        }
+    }
+}
+```
+
+[source on github](https://github.com/stevealbertwong/threadpool/tree/master/loadbalance-threadpool)
