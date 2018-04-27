@@ -569,7 +569,7 @@ inline ThreadPool::~ThreadPool(){
 
 A couple of function might be newer as it is introduced in c++11. std::move() converts lvalue (variable with address) to rvalue (temporary object without address). Rvalue reference is introduced to avoid the performance hit due to deep copy and convenience. Here std::move() is used since std::function<void> is rvalue. For instance, std::emplace_back: appends rvalue reference to the queue and call thread() on the fly so there is no unnecessary copy.
 
-std::future and std::packaged task together provides a way to to block parent thread and wait until child thread return.
+std::future and std::packaged_task together provides a way to to block parent thread and wait until child thread return. std::packaged_task could act as an asychronous callable wrapper that won't run until task is invoked.
 
 Thread pool plays an important part in modern web distributed system architecture. In particular load balancing and web servers.
 
@@ -692,3 +692,8 @@ void ThreadPool::worker(size_t id) {
 ```
 
 [source on github](https://github.com/stevealbertwong/threadpool/tree/master/loadbalance-threadpool)
+
+reference:
+[CMU 15418 parallel programming: scaling website](http://15418.courses.cs.cmu.edu/spring2016content/lectures/14_webscaling/14_webscaling_slides.pdf)
+[std::packaged_task examples](http://thispointer.com/c11-multithreading-part-10-packaged_task-example-and-tutorial/)
+[std::packaged_task examples 2](http://www.modernescpp.com/index.php/asynchronous-callable-wrappers)
