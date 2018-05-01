@@ -7,6 +7,7 @@ date:   2018-01-20 11:00:00
 mathjax: true
 ---
 
+## Classic Dining Philosophers to demonstrate Deadlock 
 
 ![](/assets/miscellaneous/dining-philosopher.png)
 
@@ -104,7 +105,7 @@ int main(int argc, char const *argv[])
 
 The reason it stops running is because the lock is designed in a way that there are multiple locks inside locks in deadlock sequence. All the thread could go through 1st lock, waiting for the 2nd lock which is already gone through by another thread.
 
-Solution:
+### Solution:
 
 Other than design the locks sequence, logically we could limit the threads to only 4 locks so at least 1 thread could go through both locks and release both locks.
 
@@ -418,7 +419,7 @@ int main(int argc, char const *argv[])
 }
 ```
 
-Threadpool
+## Threadpool
 
 One of the direct solution to dining philospher problem is limit the number of threads. Threadpool is a pool of threads that will not die. These threads will wait diligently after finish task for another new task until they are told to stop. Threadpool reduces the overhead of creating thread as such operation is expensive and creates persistent connection between processes across distribution system. For instance, Facebook uses threadpool in web server and udp packets to creates persistent connection with memcache servers to serve 90% of its content without querying its database. 
 
@@ -579,6 +580,7 @@ See the above picture and following code. void ThreadPool::load_balance() optimi
 
 One could easily add logic to check complexity of task, report thread's progress, prioritize function, and combine different threads to work on one task. The idea is that synchronization, threadpool and data structure play a essential part in understanding distributed system in modern web architecture.
 
+## Threadpool with load balancing
 
 ```
 #include "thread-pool.h"
