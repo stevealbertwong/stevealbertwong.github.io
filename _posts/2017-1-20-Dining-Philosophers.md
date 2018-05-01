@@ -3,7 +3,7 @@ layout: post
 comments: true
 title:  "Classic Dining Philosophers deadlock problem in multi-threaded server, threadpool with load balancing in scaling modern web architecture distributed system."
 excerpt: "Classic Dining Philosophers deadlock problem is solvable using condition variable, semaphore and threadpool. Such solution goes beyond just solving deadlock in multi-threaded server. It also provides an introduction to understand load balancing and threadpoll in scaling distribution system in modern web architecture."
-date:   2018-01-20 11:00:00
+date:   2017-01-20 11:00:00
 mathjax: true
 ---
 
