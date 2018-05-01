@@ -3,7 +3,7 @@ layout: post
 comments: true
 title:  "Classic Dining Philosophers deadlock problem in multi-threaded server, threadpool with load balancing in scaling modern web architecture distributed system."
 excerpt: "Classic Dining Philosophers deadlock problem is solvable using condition variable, semaphore and threadpool. Such solution goes beyond just solving deadlock in multi-threaded server. It also provides an introduction to understand load balancing and threadpoll in scaling distribution system in modern web architecture."
-date:   2017-01-20 11:00:00
+date:   2018-01-20 11:00:00
 mathjax: true
 ---
 
@@ -694,6 +694,9 @@ void ThreadPool::worker(size_t id) {
 [source on github](https://github.com/stevealbertwong/threadpool/tree/master/loadbalance-threadpool)
 
 reference:
+
 [CMU 15418 parallel programming: scaling website](http://15418.courses.cs.cmu.edu/spring2016content/lectures/14_webscaling/14_webscaling_slides.pdf)
+
 [std::packaged_task examples](http://thispointer.com/c11-multithreading-part-10-packaged_task-example-and-tutorial/)
+
 [std::packaged_task examples 2](http://www.modernescpp.com/index.php/asynchronous-callable-wrappers)

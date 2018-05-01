@@ -3,7 +3,7 @@ layout: post
 comments: true
 title:  "C++ multi-process proxy"
 excerpt: "proxy server spawn mulitple children processes to proxy client's request implemented in c++ with fork()"
-date:   2017-01-20 11:00:00
+date:   2018-01-20 11:00:00
 mathjax: true
 ---
 
